@@ -3,8 +3,10 @@ const fs = require('fs');
 const app = express();
 const expressWs = require('express-ws')(app);
 const Viewer = require('./Viewer');
+const Content = require('./Content');
 let viewers = [];
-let senderTimer;
+let viewerTimer;
+let contentTimer;
 
 app.use(express.static('public/dist'));
 
@@ -36,8 +38,8 @@ app.ws('/connect-viewer', function (ws) {
     switch (message.message) {
       case 'start':
         addViewer();
-        if (!senderTimer) {
-          startStream(ws);
+        if (!viewerTimer) {
+          startViewerStream(ws);
         }
         break;
       case 'stop':
@@ -50,14 +52,27 @@ app.ws('/connect-viewer', function (ws) {
   });
 });
 
+app.ws('/show-content', function (ws) {
+  ws.on('message', function (msg) {
+    const message = JSON.parse(msg);
+
+    switch (message.message) {
+      case 'start':
+        startContentStream(ws);
+        break;
+    }
+  });
+});
+
 function addViewer() {
   const viewer = new Viewer();
+  viewer.lifeTime = (57 * Math.random() + 3) * 1000;
 
   viewers.push(viewer);
 }
 
 function stopStream(ws) {
-  clearInterval(senderTimer);
+  clearInterval(viewerTimer);
   console.log('STOP');
   viewers.splice(0);
   ws.send('{"away": "-1"}');
@@ -72,13 +87,35 @@ function removeOnePerson(ws, index) {
   ws.send('{"away": "' + index + '"}');
 }
 
-function startStream(ws) {
-  senderTimer = setInterval(() => {
-    viewers.forEach(viewer => {
-      viewer.properties.local_timestamp = new Date().getTime();
+function startViewerStream(ws) {
+  viewerTimer = setInterval(() => {
+    const corpses = [];
+
+    viewers.forEach((viewer, index) => {
+      const currentDate = new Date().getTime();
+
+      if (currentDate - viewer.properties.local_timestamp >= viewer.lifeTime) {
+        corpses.push(index);
+      }
     });
-    ws.send(JSON.stringify(viewers));
+
+    corpses.forEach(index => {
+      viewers.splice(index, 1)
+    });
+
+    corpses.splice(0);
+    try {
+      ws.send(JSON.stringify(viewers));
+    } catch (e) {
+      console.error(e);
+    }
   }, 200)
+}
+
+function startContentStream(ws) {
+  const content = new Content();
+  const lifeTime = (35 * Math.random()).toFixed(0) + 10;
+  ws.send(JSON.stringify(content));
 }
 
 app.listen(3333, function () {

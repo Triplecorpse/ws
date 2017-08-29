@@ -1,6 +1,8 @@
 import {Component, HostListener} from '@angular/core';
 import {ViewerDetectionOutputService} from "./viewer-detection-output.service";
 import {ViewerDetectionService} from "./viewer-detection.service";
+import {ContentDeliveryService} from "./content-delivery.service";
+import {ContentDeliveryOutputService} from "./content-delivery-output.service";
 
 @Component({
   selector: 'app-root',
@@ -15,8 +17,10 @@ export class AppComponent {
   }
 
   private viewers: any[] = [];
+  content: string = '';
 
-  constructor(public viewerDetectionOutput: ViewerDetectionOutputService, public viewerDetectionService: ViewerDetectionService) {
+  constructor(public viewerDetectionOutput: ViewerDetectionOutputService, public viewerDetectionService: ViewerDetectionService,
+              public contentDeliveryOutput: ContentDeliveryOutputService, public contentDeliveryService: ContentDeliveryService) {
     viewerDetectionService.onConnectionReady
       .subscribe(data => {
         console.log('connected');
@@ -24,13 +28,17 @@ export class AppComponent {
 
     viewerDetectionOutput.messages
       .subscribe(msg => {
-        // console.log("Response from websocket:", msg);
         this.updateViewers(msg)
+      });
+
+    contentDeliveryOutput.messages
+      .subscribe(msg => {
+        this.getContentUrl(msg);
       });
   }
 
   private message = {
-    author: 'MSG01',
+    author: 'AUTH1',
     message: ''
   };
 
@@ -42,9 +50,25 @@ export class AppComponent {
     this.viewers = viewer;
   }
 
+  getContentUrl(msg) {
+    if (msg) {
+      msg = JSON.parse(msg);
+      console.log(msg.properties, msg.properties.content_name);
+      this.content = '../assets/' + msg.properties.content_name;
+      return '../assets/' + msg.properties.content_name;
+    } else {
+      this.content = '';
+      return '';
+    }
+  }
+
   sendMsg(command: string) {
     this.message.message = command;
     this.viewerDetectionOutput.messages
       .next(this.message);
+    this.message.message = 'start';
+    this.contentDeliveryOutput.messages
+      .next(this.message);
+    this.message.message = '';
   }
 }

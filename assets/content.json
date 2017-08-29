@@ -2,27 +2,9 @@
   "title": "content_event",
   "type": "object",
   "properties": {
-    "local_timestamp": {
-      "type": "number",
-      "description": "Timestamp in unix epoch format"
-    },
-    "name_of_event": {
-      "type": "string",
-      "description": "e.g., start, end, abort"
-    },
-    "content_id": {
-      "type": "string, Advertima APP development task",
-      "description": "unique identifier of a content"
-    },
-    "content_name": {
-      "type": "string",
-      "description": "the name of the content/file that is playing"
-    }
-  },
-  "required": [
-    "local_timestamp",
-    "name_of_event",
-    "content_id",
-    "content_name"
-  ]
+    "local_timestamp": 0,
+    "name_of_event": "image",
+    "content_id": "Advertima APP development task",
+    "content_name": ""
+  }
 }

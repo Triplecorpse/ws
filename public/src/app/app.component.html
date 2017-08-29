@@ -1,17 +1,30 @@
-<h1 *ngIf="isConnected">
-  {{status}}
-</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <img src="../assets/advertima-logo.png" alt="">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button class="btn btn-primary" (click)="sendMsg('start')">New Person</button>
+      <button class="btn btn-primary" (click)="sendMsg('remove.one')">Remove Random Person</button>
+      <button class="btn btn-danger" (click)="sendMsg('stop')">Stop Broadcasting</button>
+    </div>
+  </div>
 
-<div>
-  <button (click)="sendMsg('start')">Start Broadcasting</button>
-  <button (click)="sendMsg('stop')">Stop Broadcasting</button>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default" *ngIf="content">
+        <img class="content-image" [src]="content">
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-2" *ngFor="let viewer of viewers">
+      <app-person [viewer]="viewer">
+      </app-person>
+    </div>
+  </div>
 </div>
 
-<div>
-  <button (click)="sendMsg('remove.one')">Remove One Person</button>
-</div>
-
-<div>
-  <app-person [viewer]="viewer" *ngFor="let viewer of viewers">
-  </app-person>
-</div>

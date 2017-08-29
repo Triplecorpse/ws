@@ -1,8 +1,13 @@
-<div *ngIf="viewer">
-  <p>
-    Id: {{viewer.properties.person_id}}
-  </p>
-  <p>
-    Last updated on: {{viewer.properties.local_timestamp}}
-  </p>
+<div *ngIf="viewer" class="panel panel-default">
+  <div class="panel-heading">
+      {{viewer.properties.rolling_expected_values.properties.gender}}, {{viewer.properties.rolling_expected_values.properties.age}} years old
+  </div>
+  <div class="panel-body">
+    <p>
+      Id: {{viewer.properties.person_id}}
+    </p>
+    <p>
+      Came on: {{getTime(viewer.properties.local_timestamp)}}
+    </p>
+  </div>
 </div>

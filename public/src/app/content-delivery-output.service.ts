@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs/Rx';
-import {ViewerDetectionService} from "./viewer-detection.service";
+import {ContentDeliveryService} from "./content-delivery.service";
 
-const viewerUrl = 'ws://localhost:3333/connect-viewer';
+const viewerUrl = 'ws://localhost:3333/show-content';
 
 export interface Message {
   author: string,
@@ -10,14 +10,14 @@ export interface Message {
 }
 
 @Injectable()
-export class ViewerDetectionOutputService {
+export class ContentDeliveryOutputService {
   public messages: Subject<Message>;
 
-  constructor(wsService: ViewerDetectionService) {
+  constructor(wsService: ContentDeliveryService) {
     this.messages = <Subject<Message>>wsService
       .connect(viewerUrl)
       .map((response: MessageEvent): Message => {
-        return JSON.parse(response.data);
+        return response.data;
       });
   }
 }

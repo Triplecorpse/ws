@@ -2,10 +2,7 @@
   "title": "person",
   "type": "object",
   "properties": {
-    "local_timestamp": {
-      "type": "number",
-      "description": "Timestamp in unix epoch format"
-    },
+    "local_timestamp": 0,
     "person_id": {
       "type": "string",
       "description": "Unique per person. Multiple messages can be assigned to one person_id"
@@ -17,27 +14,9 @@
     "rolling_expected_values": {
       "type": "object",
       "properties": {
-        "age": {
-          "type": "number"
-        },
-        "gender": {
-          "type": "string",
-          "enum": [
-            "male",
-            "female"
-          ]
-        }
-      },
-      "required": [
-        "age",
-        "gender"
-      ]
-    },
-    "required": [
-      "local_timestamp",
-      "person_id",
-      "person_put_id",
-      "rolling_expected_values"
-    ]
+        "age": 0,
+        "gender": ""
+      }
+    }
   }
 }
