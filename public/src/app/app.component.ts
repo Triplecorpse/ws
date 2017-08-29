@@ -53,7 +53,6 @@ export class AppComponent {
   getContentUrl(msg) {
     if (msg) {
       msg = JSON.parse(msg);
-      console.log(msg.properties, msg.properties.content_name);
       this.content = '../assets/' + msg.properties.content_name;
       return '../assets/' + msg.properties.content_name;
     } else {
