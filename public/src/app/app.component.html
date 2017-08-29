@@ -1,0 +1,17 @@
+<h1 *ngIf="isConnected">
+  {{status}}
+</h1>
+
+<div>
+  <button (click)="sendMsg('start')">Start Broadcasting</button>
+  <button (click)="sendMsg('stop')">Stop Broadcasting</button>
+</div>
+
+<div>
+  <button (click)="sendMsg('remove.one')">Remove One Person</button>
+</div>
+
+<div>
+  <app-person [viewer]="viewer" *ngFor="let viewer of viewers">
+  </app-person>
+</div>
