@@ -10,16 +10,6 @@ let contentTimer;
 
 app.use(express.static('public/dist'));
 
-// expressWs.getWss().on('connection', function (ws) {
-//   console.log(expressWs.getWss().clients);
-//   ws.on('close', () => {
-//     console.log('WebSocket was closed')
-//   });
-//   // ws.send('Life is good');
-//   // ws.send('Life is good');
-// });
-
-
 app.get('/', function (req, res) {
   fs.readFile('public/dist/index.html', 'UTF8', (err, file) => {
     console.log(err, file);
@@ -114,8 +104,14 @@ function startViewerStream(ws) {
 
 function startContentStream(ws) {
   const content = new Content();
-  const lifeTime = (35 * Math.random()).toFixed(0) + 10;
+  const lifeTime = ((35 * +Math.random()).toFixed(0) + 10) * 1000;
+
+  clearTimeout(contentTimer);
+
   ws.send(JSON.stringify(content));
+  contentTimer = setTimeout(() => {
+    startContentStream(ws)
+  }, lifeTime);
 }
 
 app.listen(3333, function () {

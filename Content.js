@@ -6,7 +6,7 @@ class Viewer {
 
     tpl.properties.person_id = Math.ceil(Math.random() * 10000);
     tpl.properties.local_timestamp = new Date().getTime();
-    tpl.properties.content_name = (7 * Math.random()).toFixed(0) + '.jpg';
+    tpl.properties.content_name = (6 * +Math.random()).toFixed(0) + '.jpg';
 
     this.properties = tpl.properties;
     this.title = tpl.title;
