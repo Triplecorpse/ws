@@ -1,10 +1,6 @@
 {
-  "title": "content_event",
-  "type": "object",
-  "properties": {
-    "local_timestamp": 0,
-    "name_of_event": "image",
-    "content_id": "Advertima APP development task",
-    "content_name": ""
-  }
+  "local_timestamp": 0,
+  "name_of_event": "image",
+  "content_id": "Advertima APP development task",
+  "content_name": ""
 }

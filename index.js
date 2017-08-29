@@ -84,7 +84,7 @@ function startViewerStream(ws) {
     viewers.forEach((viewer, index) => {
       const currentDate = new Date().getTime();
 
-      if (currentDate - viewer.properties.local_timestamp >= viewer.lifeTime) {
+      if (currentDate - viewer.local_timestamp >= viewer.lifeTime) {
         corpses.push(index);
       }
     });
@@ -104,7 +104,7 @@ function startViewerStream(ws) {
 
 function startContentStream(ws) {
   const content = new Content();
-  const lifeTime = ((35 * +Math.random()).toFixed(0) + 10) * 1000;
+  const lifeTime = (+(35 * Math.random()).toFixed(0) + 10) * 1000;
 
   clearTimeout(contentTimer);
 

@@ -1,13 +1,13 @@
 <div *ngIf="viewer" class="panel panel-default">
   <div class="panel-heading">
-      {{viewer.properties.rolling_expected_values.properties.gender}}, {{viewer.properties.rolling_expected_values.properties.age}} years old
+      {{viewer.rolling_expected_values.gender}}, {{viewer.rolling_expected_values.age}} years old
   </div>
   <div class="panel-body">
     <p>
-      Id: {{viewer.properties.person_id}}
+      Id: {{viewer.person_id}}
     </p>
     <p>
-      Came on: {{getTime(viewer.properties.local_timestamp)}}
+      Came on: {{getTime(viewer.local_timestamp)}}
     </p>
   </div>
 </div>

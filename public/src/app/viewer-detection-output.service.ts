@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs/Rx';
 import {ViewerDetectionService} from "./viewer-detection.service";
+import {IMessage} from "./imessage";
+import {IViewer} from "./iviewer";
 
 const viewerUrl = 'ws://localhost:3333/connect-viewer';
 
@@ -11,12 +13,13 @@ export interface Message {
 
 @Injectable()
 export class ViewerDetectionOutputService {
-  public messages: Subject<Message>;
+  public messages: Subject<IMessage>;
 
   constructor(wsService: ViewerDetectionService) {
-    this.messages = <Subject<Message>>wsService
+    this.messages = <Subject<any>>wsService
       .connect(viewerUrl)
-      .map((response: MessageEvent): Message => {
+      .map((response: MessageEvent): IViewer[] => {
+        const res = JSON.parse(response.data);
         return JSON.parse(response.data);
       });
   }

@@ -1,22 +1,17 @@
-const viewerTpl = JSON.stringify(require('./assets/viewer.json'));
-
 class Viewer {
   constructor() {
-    const tpl = JSON.parse(viewerTpl);
+    this.rolling_expected_values = {};
 
-    tpl.properties.person_id = Math.ceil(Math.random() * 10000);
-    tpl.properties.local_timestamp = new Date().getTime();
-    tpl.properties.rolling_expected_values.properties.age = +(Math.random() * 100).toFixed(0) + 10;
+    this.person_id = Math.ceil(Math.random() * 10000);
+    this.local_timestamp = new Date().getTime();
+    this.rolling_expected_values.age = +(Math.random() * 100).toFixed(0) + 10;
+    this.rolling_expected_values.age = +(Math.random() * 100).toFixed(0) + 10;
 
     if ((Math.random() * 100).toFixed(0) % 2){
-      tpl.properties.rolling_expected_values.properties.gender = 'male';
+      this.rolling_expected_values.gender = 'male';
     } else {
-      tpl.properties.rolling_expected_values.properties.gender = 'female';
+      this.rolling_expected_values.gender = 'female';
     }
-
-    this.properties = tpl.properties;
-    this.title = tpl.title;
-    this.type = tpl.type;
   }
 }
 

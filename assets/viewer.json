@@ -1,22 +1,9 @@
 {
-  "title": "person",
-  "type": "object",
-  "properties": {
-    "local_timestamp": 0,
-    "person_id": {
-      "type": "string",
-      "description": "Unique per person. Multiple messages can be assigned to one person_id"
-    },
-    "person_put_id": {
-      "type": "string",
-      "description": "Globally unique id among all person messages"
-    },
-    "rolling_expected_values": {
-      "type": "object",
-      "properties": {
-        "age": 0,
-        "gender": ""
-      }
-    }
+  "local_timestamp": 0,
+  "person_id": "",
+  "person_put_id": "",
+  "rolling_expected_values": {
+    "age": 0,
+    "gender": "male"
   }
 }

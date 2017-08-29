@@ -1,8 +1,8 @@
-import {Component, HostListener} from '@angular/core';
-import {ViewerDetectionOutputService} from "./viewer-detection-output.service";
-import {ViewerDetectionService} from "./viewer-detection.service";
-import {ContentDeliveryService} from "./content-delivery.service";
-import {ContentDeliveryOutputService} from "./content-delivery-output.service";
+import {Component, OnInit} from '@angular/core';
+import {ViewerDetectionOutputService} from './viewer-detection-output.service';
+import {ContentDeliveryOutputService} from './content-delivery-output.service';
+
+import {IMessage} from "./imessage";
 
 @Component({
   selector: 'app-root',
@@ -11,33 +11,23 @@ import {ContentDeliveryOutputService} from "./content-delivery-output.service";
 })
 
 export class AppComponent {
-  @HostListener('window:unload', ['$event'])
-  unloadHandler(event) {
-    console.log('closing');
-  }
 
-  private viewers: any[] = [];
+  viewers: any[] = [];
   content: string = '';
 
-  constructor(public viewerDetectionOutput: ViewerDetectionOutputService, public viewerDetectionService: ViewerDetectionService,
-              public contentDeliveryOutput: ContentDeliveryOutputService, public contentDeliveryService: ContentDeliveryService) {
-    viewerDetectionService.onConnectionReady
-      .subscribe(data => {
-        console.log('connected');
-      });
-
+  constructor(public viewerDetectionOutput: ViewerDetectionOutputService, public contentDeliveryOutput: ContentDeliveryOutputService) {
     viewerDetectionOutput.messages
       .subscribe(msg => {
         this.updateViewers(msg)
       });
 
     contentDeliveryOutput.messages
-      .subscribe(msg => {
-        this.getContentUrl(msg);
+      .subscribe((msg) => {
+        this.setContentUrl(msg);
       });
   }
 
-  private message = {
+  private message: IMessage = {
     author: 'AUTH1',
     message: ''
   };
@@ -50,14 +40,11 @@ export class AppComponent {
     this.viewers = viewer;
   }
 
-  getContentUrl(msg) {
+  setContentUrl(msg) {
     if (msg) {
-      msg = JSON.parse(msg);
-      this.content = '../assets/' + msg.properties.content_name;
-      return '../assets/' + msg.properties.content_name;
+      this.content = '../assets/' + msg.content_name;
     } else {
       this.content = '';
-      return '';
     }
   }
 
@@ -69,5 +56,8 @@ export class AppComponent {
     this.contentDeliveryOutput.messages
       .next(this.message);
     this.message.message = '';
+  }
+
+  ngOnInit() {
   }
 }

@@ -8,7 +8,6 @@
     <div class="col-md-12">
       <button class="btn btn-primary" (click)="sendMsg('start')">New Person</button>
       <button class="btn btn-primary" (click)="sendMsg('remove.one')">Remove Random Person</button>
-      <button class="btn btn-danger" (click)="sendMsg('stop')">Stop Broadcasting</button>
     </div>
   </div>
 
@@ -21,7 +20,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-2" *ngFor="let viewer of viewers">
+    <div class="col-md-3" *ngFor="let viewer of viewers">
       <app-person [viewer]="viewer">
       </app-person>
     </div>

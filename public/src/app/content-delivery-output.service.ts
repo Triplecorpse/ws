@@ -1,23 +1,27 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs/Rx';
-import {ContentDeliveryService} from "./content-delivery.service";
+import {ContentDeliveryService} from './content-delivery.service';
+
+import {IContent} from './icontent';
+import {IMessage} from "./imessage";
 
 const viewerUrl = 'ws://localhost:3333/show-content';
 
-export interface Message {
-  author: string,
-  message: string
-}
-
 @Injectable()
 export class ContentDeliveryOutputService {
-  public messages: Subject<Message>;
+  public messages: Subject<IMessage>;
 
   constructor(wsService: ContentDeliveryService) {
-    this.messages = <Subject<Message>>wsService
+    this.messages = <Subject<any>>wsService
       .connect(viewerUrl)
-      .map((response: MessageEvent): Message => {
-        return response.data;
+      .map((response: MessageEvent): IContent => {
+        const res = JSON.parse(response.data);
+        return {
+          local_timestamp: res.local_timestamp,
+          name_of_event: res.name_of_event,
+          content_id: res.content_id,
+          content_name: res.content_name
+        };
       });
   }
 }
