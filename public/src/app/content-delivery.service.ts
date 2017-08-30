@@ -1,10 +1,11 @@
-import {Injectable, EventEmitter} from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as Rx from 'rxjs/Rx';
 
 @Injectable()
 export class ContentDeliveryService {
-  onConnectionReady: EventEmitter<boolean> = new EventEmitter<boolean>();
-  constructor() {}
+
+  constructor() {
+  }
 
   private subject: Rx.Subject<MessageEvent>;
 
@@ -12,9 +13,8 @@ export class ContentDeliveryService {
     if (!this.subject) {
       this.subject = this.create(url);
       if (!this.subject.hasError) {
-        console.log("Successfully connected to " + url, this.subject);
+        console.warn('Content connection established');
       }
-      this.onConnectionReady.next(true);
     }
     return this.subject;
   }

@@ -7,6 +7,7 @@ const Content = require('./Content');
 let viewers = [];
 let viewerTimer;
 let contentTimer;
+let isContentTimerStarted = false;
 
 app.use(express.static('public/dist'));
 
@@ -48,7 +49,9 @@ app.ws('/show-content', function (ws) {
 
     switch (message.message) {
       case 'start':
-        startContentStream(ws);
+        if (!isContentTimerStarted) {
+          startContentStream(ws);
+        }
         break;
     }
   });
@@ -105,6 +108,7 @@ function startViewerStream(ws) {
 function startContentStream(ws) {
   const content = new Content();
   const lifeTime = (+(35 * Math.random()).toFixed(0) + 10) * 1000;
+  isContentTimerStarted = true;
 
   clearTimeout(contentTimer);
 

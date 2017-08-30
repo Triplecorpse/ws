@@ -3,6 +3,8 @@ import {ViewerDetectionOutputService} from './viewer-detection-output.service';
 import {ContentDeliveryOutputService} from './content-delivery-output.service';
 
 import {IMessage} from "./imessage";
+import {ContentDeliveryService} from "./content-delivery.service";
+import {ViewerDetectionService} from "./viewer-detection.service";
 
 @Component({
   selector: 'app-root',
@@ -14,8 +16,10 @@ export class AppComponent {
 
   viewers: any[] = [];
   content: string = '';
+  contentId: number;
 
-  constructor(public viewerDetectionOutput: ViewerDetectionOutputService, public contentDeliveryOutput: ContentDeliveryOutputService) {
+  constructor(public viewerDetectionOutput: ViewerDetectionOutputService,
+              public contentDeliveryOutput: ContentDeliveryOutputService) {
     viewerDetectionOutput.messages
       .subscribe(msg => {
         this.updateViewers(msg)
@@ -43,6 +47,7 @@ export class AppComponent {
   setContentUrl(msg) {
     if (msg) {
       this.content = '../assets/' + msg.content_name;
+      this.contentId = msg.content_id;
     } else {
       this.content = '';
     }

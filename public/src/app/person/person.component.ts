@@ -1,11 +1,11 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-person',
   templateUrl: './person.component.html',
   styleUrls: ['./person.component.scss']
 })
-export class PersonComponent implements OnInit {
+export class PersonComponent {
   @Input() viewer: any;
 
   constructor() {
@@ -16,8 +16,4 @@ export class PersonComponent implements OnInit {
 
     return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
   }
-
-  ngOnInit() {
-  }
-
 }
