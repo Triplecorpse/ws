@@ -17,6 +17,7 @@ export class AppComponent {
   viewers: any[] = [];
   content: string = '';
   contentId: number;
+  previousContentId: number;
 
   constructor(public viewerDetectionOutput: ViewerDetectionOutputService,
               public contentDeliveryOutput: ContentDeliveryOutputService) {
@@ -27,6 +28,7 @@ export class AppComponent {
 
     contentDeliveryOutput.messages
       .subscribe((msg) => {
+        this.previousContentId = this.contentId;
         this.setContentUrl(msg);
       });
   }
