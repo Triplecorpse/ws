@@ -261,6 +261,11 @@ var AppComponent = (function () {
         this.contentDeliveryOutput = contentDeliveryOutput;
         this.viewers = [];
         this.content = '';
+        this.stats = {
+            age: 0,
+            gender: '',
+            people: 0
+        };
         this.message = {
             author: 'AUTH1',
             message: ''
@@ -272,6 +277,7 @@ var AppComponent = (function () {
         contentDeliveryOutput.messages
             .subscribe(function (msg) {
             _this.previousContentId = _this.contentId;
+            _this.setStats();
             _this.setContentUrl(msg);
         });
     }
@@ -280,6 +286,40 @@ var AppComponent = (function () {
             return;
         }
         this.viewers = viewer;
+    };
+    AppComponent.prototype.setStats = function () {
+        var avgGender = 'Male';
+        var mGenderCount = 0;
+        var fGenderCount = 0;
+        var avgAge = 0;
+        if (!this.viewers.length) {
+            return;
+        }
+        this.viewers.forEach(function (viewer) {
+            if (viewer.rolling_expected_values.gender === 'male') {
+                mGenderCount++;
+            }
+            else {
+                fGenderCount++;
+            }
+        });
+        var sum = this.viewers.reduce(function (v1, v2) {
+            var sum = 0;
+            if (typeof v1 === 'number') {
+                sum = v1;
+            }
+            else {
+                sum = v1.rolling_expected_values.age;
+            }
+            return sum + v2.rolling_expected_values.age;
+        });
+        avgAge = sum / this.viewers.length;
+        if (fGenderCount > mGenderCount) {
+            avgGender = 'Female';
+        }
+        this.stats.age = avgAge.toFixed(2);
+        this.stats.gender = avgGender;
+        this.stats.people = this.viewers.length;
     };
     AppComponent.prototype.setContentUrl = function (msg) {
         if (msg) {
@@ -471,7 +511,7 @@ module.exports = module.exports.toString();
 /***/ 523:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <img src=\"../assets/advertima-logo.png\" alt=\"\">\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-xs-12\">\n      <div>\n        Content Id:{{contentId}}\n      </div>\n      <div>\n        Previuos Content Id:{{previousContentId}}\n      </div>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <button class=\"btn btn-primary\" (click)=\"sendMsg('start')\">New Person</button>\n      <button class=\"btn btn-primary\" (click)=\"sendMsg('remove.one')\">Remove Random Person</button>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"panel panel-default\" *ngIf=\"content\">\n        <img class=\"content-image\" [src]=\"content\">\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-3\" *ngFor=\"let viewer of viewers\">\n      <app-person [viewer]=\"viewer\">\n      </app-person>\n    </div>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <img src=\"../assets/advertima-logo.png\" alt=\"\">\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-xs-12\">\n      <div>\n        Previuos Content Avg Gender:{{stats.gender}}\n      </div>\n      <div>\n        Previuos Content Avg Age:{{stats.age}}\n      </div>\n      <div>\n        Previuos Content People:{{stats.people}}\n      </div>\n      <div>\n        Previuos Content Id:{{previousContentId}}\n      </div>\n      <hr>\n      <div>\n        Content Id:{{contentId}}\n      </div>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <button class=\"btn btn-primary\" (click)=\"sendMsg('start')\">New Person</button>\n      <button class=\"btn btn-primary\" (click)=\"sendMsg('remove.one')\">Remove Random Person</button>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"panel panel-default\" *ngIf=\"content\">\n        <img class=\"content-image\" [src]=\"content\">\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-3\" *ngFor=\"let viewer of viewers\">\n      <app-person [viewer]=\"viewer\">\n      </app-person>\n    </div>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
