@@ -3,8 +3,6 @@ import {ViewerDetectionOutputService} from './viewer-detection-output.service';
 import {ContentDeliveryOutputService} from './content-delivery-output.service';
 
 import {IMessage} from "./imessage";
-import {ContentDeliveryService} from "./content-delivery.service";
-import {ViewerDetectionService} from "./viewer-detection.service";
 
 @Component({
   selector: 'app-root',
@@ -17,6 +15,7 @@ export class AppComponent {
   viewers: any[] = [];
   content: string = '';
   contentId: number;
+  previousContentId: number;
 
   constructor(public viewerDetectionOutput: ViewerDetectionOutputService,
               public contentDeliveryOutput: ContentDeliveryOutputService) {
@@ -27,6 +26,7 @@ export class AppComponent {
 
     contentDeliveryOutput.messages
       .subscribe((msg) => {
+        this.previousContentId = this.contentId;
         this.setContentUrl(msg);
       });
   }

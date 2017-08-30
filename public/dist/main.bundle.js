@@ -65,13 +65,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var ContentDeliveryService = (function () {
     function ContentDeliveryService() {
-        this.connection = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__["BehaviorSubject"](false);
-        this.onConnectionReady = this.connection.asObservable();
     }
     ContentDeliveryService.prototype.connect = function (url) {
         if (!this.subject) {
             this.subject = this.create(url);
             if (!this.subject.hasError) {
+                console.warn('Content connection established');
             }
         }
         return this.subject;
@@ -163,14 +162,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var ViewerDetectionService = (function () {
     function ViewerDetectionService() {
-        this.connection = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__["BehaviorSubject"](false);
-        this.onConnectionReady = this.connection.asObservable();
     }
     ViewerDetectionService.prototype.connect = function (url) {
         if (!this.subject) {
             this.subject = this.create(url);
             if (!this.subject.hasError) {
-                this.connection.next(true);
+                console.warn('Viewer connection established');
             }
         }
         return this.subject;
@@ -264,8 +261,6 @@ var AppComponent = (function () {
         this.contentDeliveryOutput = contentDeliveryOutput;
         this.viewers = [];
         this.content = '';
-        this.contentConnectionStatus = 'Connecting content socket...';
-        this.viewerConnectionStatus = 'Connecting viewer socket...';
         this.message = {
             author: 'AUTH1',
             message: ''
@@ -276,6 +271,7 @@ var AppComponent = (function () {
         });
         contentDeliveryOutput.messages
             .subscribe(function (msg) {
+            _this.previousContentId = _this.contentId;
             _this.setContentUrl(msg);
         });
     }
@@ -475,7 +471,7 @@ module.exports = module.exports.toString();
 /***/ 523:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <img src=\"../assets/advertima-logo.png\" alt=\"\">\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-xs-12\">\n      Content Id:{{contentId}}\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <button class=\"btn btn-primary\" (click)=\"sendMsg('start')\">New Person</button>\n      <button class=\"btn btn-primary\" (click)=\"sendMsg('remove.one')\">Remove Random Person</button>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"panel panel-default\" *ngIf=\"content\">\n        <img class=\"content-image\" [src]=\"content\">\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-3\" *ngFor=\"let viewer of viewers\">\n      <app-person [viewer]=\"viewer\">\n      </app-person>\n    </div>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <img src=\"../assets/advertima-logo.png\" alt=\"\">\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-xs-12\">\n      <div>\n        Content Id:{{contentId}}\n      </div>\n      <div>\n        Previuos Content Id:{{previousContentId}}\n      </div>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <button class=\"btn btn-primary\" (click)=\"sendMsg('start')\">New Person</button>\n      <button class=\"btn btn-primary\" (click)=\"sendMsg('remove.one')\">Remove Random Person</button>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"panel panel-default\" *ngIf=\"content\">\n        <img class=\"content-image\" [src]=\"content\">\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-3\" *ngFor=\"let viewer of viewers\">\n      <app-person [viewer]=\"viewer\">\n      </app-person>\n    </div>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
