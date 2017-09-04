@@ -16,6 +16,7 @@ export class AppComponent {
   viewers: any[] = [];
   content: string = '';
   contentId: number;
+  contentName: string;
   previousContentId: number;
   stats: any = {
     age: 0,
@@ -93,6 +94,7 @@ export class AppComponent {
     if (msg) {
       this.content = '../assets/' + msg.content_name;
       this.contentId = msg.content_id;
+      this.contentName = msg.content_name;
     } else {
       this.content = '';
     }

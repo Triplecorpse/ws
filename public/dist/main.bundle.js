@@ -317,7 +317,7 @@ var AppComponent = (function () {
         if (fGenderCount > mGenderCount) {
             avgGender = 'Female';
         }
-        this.stats.age = avgAge.toFixed(2);
+        this.stats.age = avgAge.toFixed(0);
         this.stats.gender = avgGender;
         this.stats.people = this.viewers.length;
     };
@@ -325,6 +325,7 @@ var AppComponent = (function () {
         if (msg) {
             this.content = '../assets/' + msg.content_name;
             this.contentId = msg.content_id;
+            this.contentName = msg.content_name;
         }
         else {
             this.content = '';
@@ -511,7 +512,7 @@ module.exports = module.exports.toString();
 /***/ 523:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <img src=\"../assets/advertima-logo.png\" alt=\"\">\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-xs-12\">\n      <div>\n        Previuos Content Avg Gender:{{stats.gender}}\n      </div>\n      <div>\n        Previuos Content Avg Age:{{stats.age}}\n      </div>\n      <div>\n        Previuos Content People:{{stats.people}}\n      </div>\n      <div>\n        Previuos Content Id:{{previousContentId}}\n      </div>\n      <hr>\n      <div>\n        Content Id:{{contentId}}\n      </div>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <button class=\"btn btn-primary\" (click)=\"sendMsg('start')\">New Person</button>\n      <button class=\"btn btn-primary\" (click)=\"sendMsg('remove.one')\">Remove Random Person</button>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"panel panel-default\" *ngIf=\"content\">\n        <img class=\"content-image\" [src]=\"content\">\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-3\" *ngFor=\"let viewer of viewers\">\n      <app-person [viewer]=\"viewer\">\n      </app-person>\n    </div>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <img src=\"../assets/advertima-logo.png\" alt=\"\">\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-xs-12\">\n      <div>\n        Previuos Content Avg Gender: {{stats.gender}}\n      </div>\n      <div>\n        Previuos Content Avg Age: {{stats.age}}\n      </div>\n      <div>\n        Previuos Content People: {{stats.people}}\n      </div>\n      <div>\n        Previuos Content Id: {{previousContentId}}\n      </div>\n      <hr>\n      <div>\n        Content Id: {{contentId}}\n      </div>\n      <div>\n        Content Name: {{contentName}}\n      </div>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <button class=\"btn btn-primary\" (click)=\"sendMsg('start')\">New Person</button>\n      <button class=\"btn btn-primary\" (click)=\"sendMsg('remove.one')\">Remove Random Person</button>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"panel panel-default\" *ngIf=\"content\">\n        <img class=\"content-image\" [src]=\"content\">\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-3\" *ngFor=\"let viewer of viewers\">\n      <app-person [viewer]=\"viewer\">\n      </app-person>\n    </div>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
