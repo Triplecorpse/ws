@@ -12,6 +12,12 @@ class Viewer {
     } else {
       this.rolling_expected_values.gender = 'female';
     }
+
+      if ((Math.random() * 100).toFixed(0) % 2){
+          this.rolling_expected_values.isLooking = true;
+      } else {
+          this.rolling_expected_values.isLooking = false;
+      }
   }
 }
 

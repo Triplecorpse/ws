@@ -1,51 +1,102 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 text-center">
       <img src="../assets/advertima-logo.png" alt="">
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12">
-      <div>
-        Previuos Content Avg Gender: {{stats.gender}}
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-12">
+          <button class="btn btn-primary" (click)="sendMsg('start')">New Person</button>
+        </div>
       </div>
-      <div>
-        Previuos Content Avg Age: {{stats.age}}
+      <div class="row">
+        <div class="col-md-12">
+          <button class="btn btn-primary" (click)="sendMsg('remove.one')">Remove Random Person</button>
+        </div>
       </div>
-      <div>
-        Previuos Content People: {{stats.people}}
-      </div>
-      <div>
-        Previuos Content Id: {{previousContentId}}
-      </div>
-      <hr>
-      <div>
-        Content Id: {{contentId}}
-      </div>
-      <div>
-        Content Name: {{contentName}}
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <button class="btn btn-primary" (click)="sendMsg('start')">New Person</button>
-      <button class="btn btn-primary" (click)="sendMsg('remove.one')">Remove Random Person</button>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <div class="panel panel-default" *ngIf="content">
-        <img class="content-image" [src]="content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-default" *ngIf="content">
+            <img class="content-image" [src]="content">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12" *ngFor="let viewer of viewers">
+          <app-person [viewer]="viewer">
+          </app-person>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-3" *ngFor="let viewer of viewers">
-      <app-person [viewer]="viewer">
-      </app-person>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="row text-center">
+            <div class="col-md-12"><h3>Previuos Content Avg Age:</h3></div>
+            <div class="col-md-12"><h4>{{stats.age}}</h4></div>
+          </div>
+          <div class="text-center">
+            <h3>Previuos Content People:</h3>
+            <div class="row">
+              <div class="col-xs-6 male"><h3>Male</h3></div>
+              <div class="col-xs-6 female"><h3>Female</h3></div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6"><h4>{{stats.people.male}}</h4></div>
+              <div class="col-xs-6"><h4>{{stats.people.female}}</h4></div>
+            </div>
+          </div>
+          <div class="text-center">
+            <div class="row">
+              <div class="col-md-12"><h3>Previuos Content Id:</h3></div>
+            </div>
+            <div class="row">
+              <div class="col-md-12"><h4>{{previousContentId}}</h4></div>
+            </div>
+          </div>
+          <div class="text-center">
+            <div class="row">
+              <div class="col-md-12"><h3>Previuos Content name:</h3></div>
+            </div>
+            <div class="row">
+              <div class="col-md-12"><h4>{{previousContentName}}</h4></div>
+            </div>
+          </div>
+          <hr>
+          <div class="text-center">
+            <div class="row">
+              <div class="col-md-12"><h3>Content Id:</h3></div>
+            </div>
+            <div class="row">
+              <div class="col-md-12"><h4>{{contentId}}</h4></div>
+            </div>
+          </div>
+          <div class="text-center">
+            <div class="row">
+              <div class="col-md-12"><h3>Content Name:</h3></div>
+            </div>
+            <div class="row">
+              <div class="col-md-12"><h4>{{contentName}}</h4></div>
+            </div>
+          </div>
+          <div class="text-center">
+            <h3>People who are looking:</h3>
+            <div class="row">
+              <div class="col-xs-6 male"><h3>Male</h3></div>
+              <div class="col-xs-6 female"><h3>Female</h3></div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6"><h4>{{viewerIsLooking.male}}</h4></div>
+              <div class="col-xs-6"><h4>{{viewerIsLooking.female}}</h4></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

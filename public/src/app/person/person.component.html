@@ -9,5 +9,8 @@
     <p>
       Came on: {{getTime(viewer.local_timestamp)}}
     </p>
+    <p>
+      {{viewer.rolling_expected_values.isLooking ? 'Is looking' : 'Is not looking'}}
+    </p>
   </div>
 </div>
