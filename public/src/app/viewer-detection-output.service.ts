@@ -23,4 +23,5 @@ export class ViewerDetectionOutputService {
         return JSON.parse(response.data);
       });
   }
+
 }

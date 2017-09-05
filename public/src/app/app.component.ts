@@ -4,6 +4,7 @@ import {ContentDeliveryOutputService} from './content-delivery-output.service';
 
 import {IMessage} from "./imessage";
 import {IViewer} from "./iviewer";
+import {Stats} from "./stats";
 
 @Component({
   selector: 'app-root',
@@ -19,10 +20,11 @@ export class AppComponent {
   contentName: string;
   previousContentId: number;
   stats: any = {
-    age: 0,
-    gender: '',
-    people: 0
+    age: new Stats(),
+    gender: new Stats(),
+    handsUp: new Stats()
   };
+
 
   constructor(public viewerDetectionOutput: ViewerDetectionOutputService,
               public contentDeliveryOutput: ContentDeliveryOutputService) {
@@ -53,41 +55,29 @@ export class AppComponent {
   }
 
   setStats() {
-    let avgGender = 'Male';
-    let mGenderCount: number = 0;
-    let fGenderCount: number = 0;
-    let avgAge: number = 0;
-
+    this.stats.age.resetAll();
+    this.stats.gender.resetAll();
+    this.stats.handsUp.resetAll();
     if (!this.viewers.length) {
       return;
     }
 
     this.viewers.forEach((viewer) => {
       if (viewer.rolling_expected_values.gender === 'male') {
-        mGenderCount++;
+        this.stats.gender.countMale();
+        this.stats.age.addMale(viewer.rolling_expected_values.age);
+        if (viewer.rolling_expected_values.handUp) {
+          this.stats.handsUp.countMale();
+        }
       } else {
-        fGenderCount++;
+        this.stats.gender.countFemale();
+        this.stats.age.addFemale(viewer.rolling_expected_values.age);
+        if (viewer.rolling_expected_values.handUp) {
+          this.stats.handsUp.countFemale();
+        }
       }
+
     });
-
-    const sum = this.viewers.reduce((v1, v2) => {
-      let sum = 0;
-      if( typeof v1 === 'number' ) {
-        sum = v1
-      } else {
-        sum = v1.rolling_expected_values.age;
-      }
-      return sum + v2.rolling_expected_values.age;
-    });
-    avgAge = sum / this.viewers.length;
-
-    if (fGenderCount > mGenderCount) {
-      avgGender = 'Female'
-    }
-
-    this.stats.age = avgAge.toFixed(0);
-    this.stats.gender = avgGender;
-    this.stats.people = this.viewers.length;
   }
 
   setContentUrl(msg) {
@@ -108,6 +98,26 @@ export class AppComponent {
     this.contentDeliveryOutput.messages
       .next(this.message);
     this.message.message = '';
+  }
+
+  avgAge(sumAge, sumPeople): number {
+    if (sumAge == 0 || sumPeople == 0) {
+      return 0;
+    } else {
+      return +(sumAge / sumPeople).toFixed(0)
+    }
+  }
+
+  avgAllAge(male, female): number {
+    if (male == 0 || female == 0) {
+      if (male) {
+        return male;
+      } else {
+        return female;
+      }
+    } else {
+      return +((male + female) / 2).toFixed(0);
+    }
   }
 
   ngOnInit() {

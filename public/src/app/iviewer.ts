@@ -10,5 +10,6 @@ export interface IViewer {
   rolling_expected_values: {
     age: number;
     gender: gender;
+    handUp: boolean;
   };
 }

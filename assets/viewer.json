@@ -4,6 +4,7 @@
   "person_put_id": "",
   "rolling_expected_values": {
     "age": 0,
-    "gender": "male"
+    "gender": "male",
+    "handUp": "true"
   }
 }

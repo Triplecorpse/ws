@@ -13,7 +13,18 @@ export class PersonComponent {
 
   getTime(timestamp: number): string {
     const time = new Date(timestamp);
-
-    return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
+    let hours:string = time.getHours().toString();
+    let minutes = time.getMinutes().toString();
+    let seconds = time.getSeconds().toString();
+    if (+hours < 10) {
+      hours = "0" + hours;
+    }
+    if (+minutes < 10) {
+      minutes = "0" + minutes;
+    }
+    if (+seconds < 10) {
+      seconds = "0" + seconds;
+    }
+    return `${hours}:${minutes}:${seconds}`;
   }
 }
