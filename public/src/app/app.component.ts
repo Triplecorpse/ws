@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ViewerDetectionOutputService} from './viewer-detection-output.service';
 import {ContentDeliveryOutputService} from './content-delivery-output.service';
 
@@ -11,29 +11,38 @@ import {IViewer} from "./iviewer";
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent {
+export class AppComponent implements OnDestroy {
 
   viewers: any[] = [];
+  viewerIsLooking: any = {
+    male: 0,
+    female: 0
+  };
   content: string = '';
   contentId: number;
   contentName: string;
   previousContentId: number;
+  previousContentName: string;
   stats: any = {
     age: 0,
     gender: '',
-    people: 0
+    people: {
+      male: 0,
+      female: 0
+    }
   };
 
   constructor(public viewerDetectionOutput: ViewerDetectionOutputService,
               public contentDeliveryOutput: ContentDeliveryOutputService) {
     viewerDetectionOutput.messages
       .subscribe(msg => {
-        this.updateViewers(msg)
+        this.updateViewers(msg);
       });
 
     contentDeliveryOutput.messages
       .subscribe((msg) => {
         this.previousContentId = this.contentId;
+        this.previousContentName = this.contentName;
         this.setStats();
         this.setContentUrl(msg);
       });
@@ -50,13 +59,23 @@ export class AppComponent {
     }
 
     this.viewers = viewer;
+    this.viewerIsLooking.male = 0;
+    this.viewerIsLooking.female = 0;
+    this.viewers.forEach((v) => {
+      if (v.rolling_expected_values.isLooking) {
+        v.rolling_expected_values.gender === 'male' ? this.viewerIsLooking.male += 1 : this.viewerIsLooking.female += 1;
+      }
+    });
   }
 
   setStats() {
-    let avgGender = 'Male';
     let mGenderCount: number = 0;
     let fGenderCount: number = 0;
     let avgAge: number = 0;
+
+    this.stats.people.female = 0;
+    this.stats.people.male = 0;
+    this.stats.age = 0;
 
     if (!this.viewers.length) {
       return;
@@ -70,24 +89,16 @@ export class AppComponent {
       }
     });
 
-    const sum = this.viewers.reduce((v1, v2) => {
-      let sum = 0;
-      if( typeof v1 === 'number' ) {
-        sum = v1
-      } else {
-        sum = v1.rolling_expected_values.age;
-      }
-      return sum + v2.rolling_expected_values.age;
+    let sum: number = 0;
+
+    this.viewers.forEach((viewer) => {
+      sum += viewer.rolling_expected_values.age;
     });
     avgAge = sum / this.viewers.length;
 
-    if (fGenderCount > mGenderCount) {
-      avgGender = 'Female'
-    }
-
+    this.stats.people.female = fGenderCount;
+    this.stats.people.male = mGenderCount;
     this.stats.age = avgAge.toFixed(0);
-    this.stats.gender = avgGender;
-    this.stats.people = this.viewers.length;
   }
 
   setContentUrl(msg) {
@@ -101,6 +112,8 @@ export class AppComponent {
   }
 
   sendMsg(command: string) {
+    this.viewerIsLooking.male = 0;
+    this.viewerIsLooking.female = 0;
     this.message.message = command;
     this.viewerDetectionOutput.messages
       .next(this.message);
@@ -110,6 +123,8 @@ export class AppComponent {
     this.message.message = '';
   }
 
-  ngOnInit() {
+  ngOnDestroy() {
+    this.viewerDetectionOutput.messages.unsubscribe();
+    this.contentDeliveryOutput.messages.unsubscribe();
   }
 }
