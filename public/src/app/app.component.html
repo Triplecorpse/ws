@@ -40,7 +40,9 @@
           <div class="row">
             <div class="col-xs-3 col-md-3 item">All</div>
             <div class="col-xs-3 col-md-3 item">{{stats.gender.male + stats.gender.female}}</div>
-            <div class="col-xs-3 col-md-3 item">{{avgAllAge(avgAge(stats.age.male,stats.gender.male),avgAge(stats.age.female,stats.gender.female))}}</div>
+            <div class="col-xs-3 col-md-3 item">
+              {{avgAllAge(avgAge(stats.age.male,stats.gender.male),avgAge(stats.age.female,stats.gender.female))}}
+            </div>
             <div class="col-xs-3 col-md-3 item">{{stats.handsUp.male + stats.handsUp.female}}</div>
           </div>
           <div class="row">

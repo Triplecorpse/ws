@@ -13,7 +13,7 @@ export class PersonComponent {
 
   getTime(timestamp: number): string {
     const time = new Date(timestamp);
-    let hours:string = time.getHours().toString();
+    let hours: string = time.getHours().toString();
     let minutes = time.getMinutes().toString();
     let seconds = time.getSeconds().toString();
     if (+hours < 10) {

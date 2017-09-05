@@ -2,6 +2,7 @@
   text-transform: uppercase;
 
 }
+
 .user {
   &-heading {
     font-weight: bold;
@@ -9,10 +10,10 @@
       float: right;
     }
   }
-  &-info{
+  &-info {
     font-size: 15px;
     padding: 10px;
-    &_gender{
+    &_gender {
       text-transform: capitalize;
       font-weight: bold;
     }
