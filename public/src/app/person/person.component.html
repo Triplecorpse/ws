@@ -1,13 +1,35 @@
 <div *ngIf="viewer" class="panel panel-default">
   <div class="panel-heading">
-      {{viewer.rolling_expected_values.gender}}, {{viewer.rolling_expected_values.age}} years old
+    <span class="user-heading">ID: {{viewer.person_id}}</span>
+    <span class="user-heading user-heading__time">{{getTime(viewer.local_timestamp)}}</span>
   </div>
   <div class="panel-body">
-    <p>
-      Id: {{viewer.person_id}}
-    </p>
-    <p>
-      Came on: {{getTime(viewer.local_timestamp)}}
-    </p>
+    <div class="row">
+      <div class="col-xs-9 user-info user-info_gender">
+        {{viewer.rolling_expected_values.gender}}
+      </div>
+      <div *ngIf="viewer.rolling_expected_values.gender == 'male'"
+           class="col-xs-2 glyphicon glyphicon-king user-info user-info_icons"></div>
+      <div *ngIf="viewer.rolling_expected_values.gender == 'female'"
+           class="col-xs-2 glyphicon glyphicon-queen user-info user-info_icons"></div>
+
+    </div>
+    <div class="row">
+      <div class="col-xs-9 user-info">
+        <b>{{viewer.rolling_expected_values.age}}</b> years old
+      </div>
+      <div class="col-xs-2  glyphicon glyphicon-hourglass user-info user-info_icons"></div>
+    </div>
+    <div class="row">
+      <div class="col-xs-9 user-info">
+        Hand up: <b>{{viewer.rolling_expected_values.handUp}}</b>
+      </div>
+
+      <div *ngIf="viewer.rolling_expected_values.handUp"
+           class="col-xs-2 glyphicon glyphicon-hand-up user-info user-info_icons"></div>
+      <div *ngIf="!viewer.rolling_expected_values.handUp"
+           class="col-xs-2 glyphicon glyphicon-hand-down user-info user-info_icons"></div>
+    </div>
+
   </div>
 </div>

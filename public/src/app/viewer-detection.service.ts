@@ -40,4 +40,5 @@ export class ViewerDetectionService {
 
     return Rx.Subject.create(observer, observable);
   }
+
 }

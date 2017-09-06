@@ -5,3 +5,34 @@
   display: block;
 
 }
+.info{
+  margin-bottom: 10px;
+  text-align: center;
+  &-content{
+    //text-align: center;
+  }
+}
+.logo{
+  text-align: center;
+  margin-bottom: 10px;
+}
+.heading{
+  &__online{
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+  }
+}
+.button{
+  margin: 5px;
+}
+.people{
+  margin: 20px auto;
+}
+.item{
+  padding:10px;
+  &__heading{
+    font-weight:bold;
+  }
+}
+

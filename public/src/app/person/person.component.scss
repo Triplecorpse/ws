@@ -1,3 +1,26 @@
 .panel-heading {
   text-transform: uppercase;
+
 }
+
+.user {
+  &-heading {
+    font-weight: bold;
+    &__time {
+      float: right;
+    }
+  }
+  &-info {
+    font-size: 15px;
+    padding: 10px;
+    &_gender {
+      text-transform: capitalize;
+      font-weight: bold;
+    }
+    &_icons{
+      text-align: right;
+    }
+  }
+}
+
+

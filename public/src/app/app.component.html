@@ -1,46 +1,76 @@
 <div class="container">
-  <div class="row">
+  <div class="row logo">
     <div class="col-md-12">
       <img src="../assets/advertima-logo.png" alt="">
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12">
-      <div>
-        Previuos Content Avg Gender: {{stats.gender}}
-      </div>
-      <div>
-        Previuos Content Avg Age: {{stats.age}}
-      </div>
-      <div>
-        Previuos Content People: {{stats.people}}
-      </div>
-      <div>
-        Previuos Content Id: {{previousContentId}}
-      </div>
-      <hr>
-      <div>
-        Content Id: {{contentId}}
-      </div>
-      <div>
-        Content Name: {{contentName}}
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <button class="btn btn-primary" (click)="sendMsg('start')">New Person</button>
-      <button class="btn btn-primary" (click)="sendMsg('remove.one')">Remove Random Person</button>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6 col-md-push-6">
       <div class="panel panel-default" *ngIf="content">
         <img class="content-image" [src]="content">
       </div>
     </div>
+    <div class="col-md-6 col-md-pull-6">
+      <div class="info">
+        <h4 class="heading">Content Info</h4>
+        <div class="col-md-6 col-xs-6">
+          <b>Content ID</b>
+          <p>{{contentId}}</p>
+        </div>
+        <div class="col-md-6 col-xs-6">
+          <b>Content Name</b>
+          <p>{{contentName}}</p>
+        </div>
+        <hr class="col-md-12">
+      </div>
+      <div class="info">
+        <h4 class="heading">Previous Content Info</h4>
+        <div>
+          <b>Content ID</b>
+          <p>{{previousContentId}}</p>
+        </div>
+        <h5 class="heading">User info</h5>
+        <div class="col-md-10 col-md-offset-1">
+          <div class="row">
+            <div class="col-xs-3 col-md-3 item item__heading">People</div>
+            <div class="col-xs-3 col-md-3 item item__heading">Count</div>
+            <div class="col-xs-3 col-md-3 item item__heading">Age</div>
+            <div class="col-xs-3 col-md-3 item item__heading">HandsUp</div>
+          </div>
+          <div class="row">
+            <div class="col-xs-3 col-md-3 item">All</div>
+            <div class="col-xs-3 col-md-3 item">{{stats.gender.male + stats.gender.female}}</div>
+            <div class="col-xs-3 col-md-3 item">
+              {{avgAllAge(avgAge(stats.age.male,stats.gender.male),avgAge(stats.age.female,stats.gender.female))}}
+            </div>
+            <div class="col-xs-3 col-md-3 item">{{stats.handsUp.male + stats.handsUp.female}}</div>
+          </div>
+          <div class="row">
+            <div class="col-xs-3 col-md-3 item">Female</div>
+            <div class="col-xs-3 col-md-3 item">{{stats.gender.female}}</div>
+            <div class="col-xs-3 col-md-3 item">{{avgAge(stats.age.female,stats.gender.female)}}</div>
+            <div class="col-xs-3 col-md-3 item">{{stats.handsUp.female}}</div>
+          </div>
+          <div class="row">
+            <div class="col-xs-3 col-md-3 item">Male</div>
+            <div class="col-xs-3 col-md-3 item">{{stats.gender.male}}</div>
+            <div class="col-xs-3 col-md-3 item">{{avgAge(stats.age.male,stats.gender.male)}}</div>
+            <div class="col-xs-3 col-md-3 item">{{stats.handsUp.male}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  <div class="row">
+    <div class="col-md-12 people">
+      <h3 class="heading heading__online">People Online</h3>
+      <div>
+        <button class="col-xs-12 col-sm-3 col-md-2  btn btn-primary button" (click)="sendMsg('start')">Add New Person</button>
+        <button class="col-xs-12 col-sm-3  btn btn-danger button" (click)="sendMsg('remove.one')">Remove Random Person</button>
+      </div>
+    </div>
+  </div>
+  <br>
 
   <div class="row">
     <div class="col-md-3" *ngFor="let viewer of viewers">
@@ -48,5 +78,6 @@
       </app-person>
     </div>
   </div>
+
 </div>
 
