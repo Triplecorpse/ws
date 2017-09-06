@@ -5,30 +5,30 @@
   </div>
   <div class="panel-body">
     <div class="row">
-      <div class="col-md-6 user-info user-info_gender">
+      <div class="col-xs-9 user-info user-info_gender">
         {{viewer.rolling_expected_values.gender}}
       </div>
       <div *ngIf="viewer.rolling_expected_values.gender == 'male'"
-           class="col-md-3 col-md-offset-3 glyphicon glyphicon-king user-info"></div>
+           class="col-xs-2 glyphicon glyphicon-king user-info user-info_icons"></div>
       <div *ngIf="viewer.rolling_expected_values.gender == 'female'"
-           class="col-md-3 col-md-offset-3 glyphicon glyphicon-queen user-info"></div>
+           class="col-xs-2 glyphicon glyphicon-queen user-info user-info_icons"></div>
 
     </div>
     <div class="row">
-      <div class="col-md-6 user-info">
+      <div class="col-xs-9 user-info">
         <b>{{viewer.rolling_expected_values.age}}</b> years old
       </div>
-      <div class="col-md-3 col-md-offset-3 glyphicon glyphicon-hourglass user-info"></div>
+      <div class="col-xs-2  glyphicon glyphicon-hourglass user-info user-info_icons"></div>
     </div>
     <div class="row">
-      <div class="col-md-6 user-info">
+      <div class="col-xs-9 user-info">
         Hand up: <b>{{viewer.rolling_expected_values.handUp}}</b>
       </div>
 
       <div *ngIf="viewer.rolling_expected_values.handUp"
-           class="col-md-3 col-md-offset-3 glyphicon glyphicon-hand-up user-info"></div>
+           class="col-xs-2 glyphicon glyphicon-hand-up user-info user-info_icons"></div>
       <div *ngIf="!viewer.rolling_expected_values.handUp"
-           class="col-md-3 col-md-offset-3 glyphicon glyphicon-hand-down user-info"></div>
+           class="col-xs-2 glyphicon glyphicon-hand-down user-info user-info_icons"></div>
     </div>
 
   </div>
