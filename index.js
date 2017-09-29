@@ -13,7 +13,6 @@ app.use(express.static('public/dist'));
 
 app.get('/', function (req, res) {
   fs.readFile('public/dist/index.html', 'UTF8', (err, file) => {
-    console.log(err, file);
     if (!err) {
       res.send(file)
     } else {
@@ -22,7 +21,7 @@ app.get('/', function (req, res) {
   });
 });
 
-app.ws('/connect-viewer', function (ws) {
+app.ws('/', function (ws) {
   ws.on('message', function (msg) {
     const message = JSON.parse(msg);
 
