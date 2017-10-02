@@ -4,17 +4,17 @@ import * as Rx from 'rxjs/Rx';
 @Injectable()
 export class ViewerDetectionService {
 
-  constructor() {
-  }
-
   private subject: Rx.Subject<MessageEvent>;
+  public connection: Rx.ReplaySubject<any>;
+  private a;
+
+  constructor() {
+    this.connection = new Rx.ReplaySubject();
+  }
 
   public connect(url): Rx.Subject<MessageEvent> {
     if (!this.subject) {
       this.subject = this.create(url);
-      if (!this.subject.hasError) {
-        console.warn('Viewer connection established');
-      }
     }
     return this.subject;
   }
@@ -22,16 +22,20 @@ export class ViewerDetectionService {
   private create(url): Rx.Subject<MessageEvent> {
     let ws = new WebSocket(url);
 
-    let observable = Rx.Observable.create(
-      (obs: Rx.Observer<MessageEvent>) => {
-        ws.onmessage = obs.next.bind(obs);
-        ws.onerror = obs.error.bind(obs);
-        ws.onclose = obs.complete.bind(obs);
-        return ws.close.bind(ws);
-      });
+    ws.onopen = () => {
+      this.connection.next({text: 'Connection established'});
+    };
+
+    let observable = Rx.Observable.create((obs: Rx.Observer<MessageEvent>) => {
+      ws.onmessage = obs.next.bind(obs);
+      ws.onerror = obs.error.bind(obs);
+      ws.onclose = obs.complete.bind(obs);
+      return ws.close.bind(ws);
+    });
 
     let observer = {
       next: (data: Object) => {
+        console.log(ws.readyState, WebSocket.OPEN);
         if (ws.readyState === WebSocket.OPEN) {
           ws.send(JSON.stringify(data));
         }

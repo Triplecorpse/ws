@@ -4,11 +4,14 @@ const app = express();
 const expressWs = require('express-ws')(app);
 const viewers = [];
 
-import ManifestMessage from 'messages/ManifestMessage';
-import PersonAliveMessage from 'messages/PersonAliveMessage';
-import PersonUpdateMessage from 'messages/PersonUpdateMessage';
+const ManifestMessage = require('./messages/ManifestMessage');
+const PersonAliveMessage = require('./messages/PersonAliveMessage');
+const PersonUpdateMessage = require('./messages/PersonUpdateMessage');
 
 app.use(express.static('public/dist'));
+expressWs.getWss().on('connection', function(ws) {
+    console.log('connection open', new Date());
+});
 
 app.get('/', function (req, res) {
     fs.readFile('public/dist/index.html', 'UTF8', (err, file) => {
@@ -23,9 +26,9 @@ app.get('/', function (req, res) {
 app.ws('/', function (ws) {
     ws.on('message', function (msg) {
         const message = JSON.parse(msg);
-
         switch (message.name) {
             case 'request_manifest':
+                sendStartPoint(ws, message.message_id);
                 startManifestStream(ws);
                 startPersonUpdateStream(ws);
                 startPersonAliveStream(ws);
@@ -40,13 +43,12 @@ function addViewer(age, gender, position) {
     viewers.push(viewer);
 }
 
-function startPersonUpdateStream(ws) {
-    setInterval(() => {
-        viewers.forEach(viewer => {
-            viewer.renewPutId();
-            ws.send(viewer);
-        })
-    }, 200)
+function sendStartPoint(ws, id) {
+    const manifest = new ManifestMessage();
+
+    manifest.type = 'rpc_response';
+    manifest.message_id = id;
+    ws.send(manifest);
 }
 
 function startManifestStream(ws) {
@@ -64,6 +66,15 @@ function startPersonAliveStream(ws) {
 
     setInterval(() => {
         ws.send(personAliveMessage);
+    }, 200)
+}
+
+function startPersonUpdateStream(ws) {
+    setInterval(() => {
+        viewers.forEach(viewer => {
+            viewer.renewPutId();
+            ws.send(viewer);
+        })
     }, 200)
 }
 

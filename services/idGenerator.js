@@ -1,4 +1,4 @@
-export default function generateId(options) {
+module.exports = function generateId(options) {
     options = options || {};
     options.configuration = options.configuration || '8-4-4-11';
 
@@ -6,7 +6,7 @@ export default function generateId(options) {
     const blocks = sequencesConfiguration.map(qty => generateSequence(+qty));
 
     return blocks.join('-');
-}
+};
 
 function generateSequence(number) {
     const symbols = '1234567890qwertyuiopasdfghjklzxcvbnm';

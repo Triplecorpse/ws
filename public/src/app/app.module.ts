@@ -7,8 +7,6 @@ import {AppComponent} from './app.component';
 
 import {ViewerDetectionService} from './viewer-detection.service';
 import {ViewerDetectionOutputService} from './viewer-detection-output.service';
-import {ContentDeliveryService} from './content-delivery.service';
-import {ContentDeliveryOutputService} from './content-delivery-output.service';
 
 import {PersonComponent} from './person/person.component';
 
@@ -22,7 +20,7 @@ import {PersonComponent} from './person/person.component';
     FormsModule,
     HttpModule
   ],
-  providers: [ViewerDetectionService, ViewerDetectionOutputService, ContentDeliveryService, ContentDeliveryOutputService],
+  providers: [ViewerDetectionService, ViewerDetectionOutputService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

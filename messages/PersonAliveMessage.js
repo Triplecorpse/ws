@@ -1,4 +1,4 @@
-export default class PersonAliveMessage {
+module.exports = class PersonAliveMessage {
     constructor(alives) {
         alives = alives || [];
 

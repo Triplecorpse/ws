@@ -5,109 +5,7 @@ webpackJsonp([1,4],{
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__content_delivery_service__ = __webpack_require__(306);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContentDeliveryOutputService; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var viewerUrl = 'ws://localhost:3333/show-content';
-var ContentDeliveryOutputService = (function () {
-    function ContentDeliveryOutputService(wsService) {
-        this.messages = wsService
-            .connect(viewerUrl)
-            .map(function (response) {
-            var res = JSON.parse(response.data);
-            return {
-                local_timestamp: res.local_timestamp,
-                name_of_event: res.name_of_event,
-                content_id: res.content_id,
-                content_name: res.content_name
-            };
-        });
-    }
-    ContentDeliveryOutputService = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__content_delivery_service__["a" /* ContentDeliveryService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__content_delivery_service__["a" /* ContentDeliveryService */]) === 'function' && _a) || Object])
-    ], ContentDeliveryOutputService);
-    return ContentDeliveryOutputService;
-    var _a;
-}());
-//# sourceMappingURL=content-delivery-output.service.js.map
-
-/***/ }),
-
-/***/ 306:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__ = __webpack_require__(323);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContentDeliveryService; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var ContentDeliveryService = (function () {
-    function ContentDeliveryService() {
-    }
-    ContentDeliveryService.prototype.connect = function (url) {
-        if (!this.subject) {
-            this.subject = this.create(url);
-            if (!this.subject.hasError) {
-                console.warn('Content connection established');
-            }
-        }
-        return this.subject;
-    };
-    ContentDeliveryService.prototype.create = function (url) {
-        var ws = new WebSocket(url);
-        var observable = __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__["Observable"].create(function (obs) {
-            ws.onmessage = obs.next.bind(obs);
-            ws.onerror = obs.error.bind(obs);
-            ws.onclose = obs.complete.bind(obs);
-            return ws.close.bind(ws);
-        });
-        var observer = {
-            next: function (data) {
-                if (ws.readyState === WebSocket.OPEN) {
-                    ws.send(JSON.stringify(data));
-                }
-            }
-        };
-        return __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__["Subject"].create(observer, observable);
-    };
-    ContentDeliveryService = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(), 
-        __metadata('design:paramtypes', [])
-    ], ContentDeliveryService);
-    return ContentDeliveryService;
-}());
-//# sourceMappingURL=content-delivery.service.js.map
-
-/***/ }),
-
-/***/ 307:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__viewer_detection_service__ = __webpack_require__(308);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__viewer_detection_service__ = __webpack_require__(306);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ViewerDetectionOutputService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -120,9 +18,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-var viewerUrl = 'ws://localhost:3333/connect-viewer';
+var viewerUrl = 'ws://localhost:3333/';
 var ViewerDetectionOutputService = (function () {
     function ViewerDetectionOutputService(wsService) {
+        this.wsService = wsService;
+        this.connection = this.wsService.connection;
         this.messages = wsService
             .connect(viewerUrl)
             .map(function (response) {
@@ -141,12 +41,12 @@ var ViewerDetectionOutputService = (function () {
 
 /***/ }),
 
-/***/ 308:
+/***/ 306:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__ = __webpack_require__(323);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__ = __webpack_require__(523);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ViewerDetectionService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -162,18 +62,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var ViewerDetectionService = (function () {
     function ViewerDetectionService() {
+        this.connection = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__["ReplaySubject"]();
     }
     ViewerDetectionService.prototype.connect = function (url) {
         if (!this.subject) {
             this.subject = this.create(url);
             if (!this.subject.hasError) {
-                console.warn('Viewer connection established');
+            }
+            else {
             }
         }
         return this.subject;
     };
     ViewerDetectionService.prototype.create = function (url) {
+        var _this = this;
         var ws = new WebSocket(url);
+        ws.onopen = function () {
+            _this.connection.next({ text: 'Connection established' });
+        };
         var observable = __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__["Observable"].create(function (obs) {
             ws.onmessage = obs.next.bind(obs);
             ws.onerror = obs.error.bind(obs);
@@ -182,6 +88,7 @@ var ViewerDetectionService = (function () {
         });
         var observer = {
             next: function (data) {
+                console.log(ws.readyState, WebSocket.OPEN);
                 if (ws.readyState === WebSocket.OPEN) {
                     ws.send(JSON.stringify(data));
                 }
@@ -199,7 +106,7 @@ var ViewerDetectionService = (function () {
 
 /***/ }),
 
-/***/ 354:
+/***/ 351:
 /***/ (function(module, exports) {
 
 function webpackEmptyContext(req) {
@@ -208,20 +115,20 @@ function webpackEmptyContext(req) {
 webpackEmptyContext.keys = function() { return []; };
 webpackEmptyContext.resolve = webpackEmptyContext;
 module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 354;
+webpackEmptyContext.id = 351;
 
 
 /***/ }),
 
-/***/ 355:
+/***/ 352:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(443);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__(464);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(466);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(440);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__(461);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(463);
 
 
 
@@ -234,13 +141,12 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dyna
 
 /***/ }),
 
-/***/ 463:
+/***/ 460:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__viewer_detection_output_service__ = __webpack_require__(307);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__content_delivery_output_service__ = __webpack_require__(305);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__viewer_detection_output_service__ = __webpack_require__(305);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -253,124 +159,58 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-
 var AppComponent = (function () {
-    function AppComponent(viewerDetectionOutput, contentDeliveryOutput) {
+    function AppComponent(viewerDetectionOutput) {
         var _this = this;
         this.viewerDetectionOutput = viewerDetectionOutput;
-        this.contentDeliveryOutput = contentDeliveryOutput;
-        this.viewers = [];
-        this.content = '';
-        this.stats = {
-            age: 0,
-            gender: '',
-            people: 0
+        this.initMessage = {
+            type: 'rpc',
+            message_id: '26fcc4a9-2fc5-4c46-a272-5e33485d9026',
+            method_name: 'request_manifest',
+            data: {}
         };
-        this.message = {
-            author: 'AUTH1',
-            message: ''
-        };
+        this.statusText = 'Connecting...';
         viewerDetectionOutput.messages
             .subscribe(function (msg) {
-            _this.updateViewers(msg);
+            // console.log(msg);
         });
-        contentDeliveryOutput.messages
-            .subscribe(function (msg) {
-            _this.previousContentId = _this.contentId;
-            _this.setStats();
-            _this.setContentUrl(msg);
+        viewerDetectionOutput.connection
+            .subscribe(function (data) {
+            _this.statusText = data.text;
+            console.log(new Date());
+            setTimeout(function () {
+                viewerDetectionOutput.messages
+                    .next(_this.initMessage);
+            }, 1000);
         });
     }
-    AppComponent.prototype.updateViewers = function (viewer) {
-        if (viewer.away) {
-            return;
-        }
-        this.viewers = viewer;
-    };
-    AppComponent.prototype.setStats = function () {
-        var avgGender = 'Male';
-        var mGenderCount = 0;
-        var fGenderCount = 0;
-        var avgAge = 0;
-        if (!this.viewers.length) {
-            return;
-        }
-        this.viewers.forEach(function (viewer) {
-            if (viewer.rolling_expected_values.gender === 'male') {
-                mGenderCount++;
-            }
-            else {
-                fGenderCount++;
-            }
-        });
-        var sum = this.viewers.reduce(function (v1, v2) {
-            var sum = 0;
-            if (typeof v1 === 'number') {
-                sum = v1;
-            }
-            else {
-                sum = v1.rolling_expected_values.age;
-            }
-            return sum + v2.rolling_expected_values.age;
-        });
-        avgAge = sum / this.viewers.length;
-        if (fGenderCount > mGenderCount) {
-            avgGender = 'Female';
-        }
-        this.stats.age = avgAge.toFixed(0);
-        this.stats.gender = avgGender;
-        this.stats.people = this.viewers.length;
-    };
-    AppComponent.prototype.setContentUrl = function (msg) {
-        if (msg) {
-            this.content = '../assets/' + msg.content_name;
-            this.contentId = msg.content_id;
-            this.contentName = msg.content_name;
-        }
-        else {
-            this.content = '';
-        }
-    };
-    AppComponent.prototype.sendMsg = function (command) {
-        this.message.message = command;
-        this.viewerDetectionOutput.messages
-            .next(this.message);
-        this.message.message = 'start';
-        this.contentDeliveryOutput.messages
-            .next(this.message);
-        this.message.message = '';
-    };
-    AppComponent.prototype.ngOnInit = function () {
-    };
     AppComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["U" /* Component */])({
             selector: 'app-root',
-            template: __webpack_require__(523),
-            styles: [__webpack_require__(520)]
+            template: __webpack_require__(520),
+            styles: [__webpack_require__(517)]
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__viewer_detection_output_service__["a" /* ViewerDetectionOutputService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__viewer_detection_output_service__["a" /* ViewerDetectionOutputService */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__content_delivery_output_service__["a" /* ContentDeliveryOutputService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__content_delivery_output_service__["a" /* ContentDeliveryOutputService */]) === 'function' && _b) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__viewer_detection_output_service__["a" /* ViewerDetectionOutputService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__viewer_detection_output_service__["a" /* ViewerDetectionOutputService */]) === 'function' && _a) || Object])
     ], AppComponent);
     return AppComponent;
-    var _a, _b;
+    var _a;
 }());
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
 
-/***/ 464:
+/***/ 461:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(433);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(439);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(463);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__viewer_detection_service__ = __webpack_require__(308);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__viewer_detection_output_service__ = __webpack_require__(307);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__content_delivery_service__ = __webpack_require__(306);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__content_delivery_output_service__ = __webpack_require__(305);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__person_person_component__ = __webpack_require__(465);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(430);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(436);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(460);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__viewer_detection_service__ = __webpack_require__(306);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__viewer_detection_output_service__ = __webpack_require__(305);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__person_person_component__ = __webpack_require__(462);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -389,8 +229,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-
 var AppModule = (function () {
     function AppModule() {
     }
@@ -398,14 +236,14 @@ var AppModule = (function () {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */])({
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */],
-                __WEBPACK_IMPORTED_MODULE_9__person_person_component__["a" /* PersonComponent */]
+                __WEBPACK_IMPORTED_MODULE_7__person_person_component__["a" /* PersonComponent */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* HttpModule */]
             ],
-            providers: [__WEBPACK_IMPORTED_MODULE_5__viewer_detection_service__["a" /* ViewerDetectionService */], __WEBPACK_IMPORTED_MODULE_6__viewer_detection_output_service__["a" /* ViewerDetectionOutputService */], __WEBPACK_IMPORTED_MODULE_7__content_delivery_service__["a" /* ContentDeliveryService */], __WEBPACK_IMPORTED_MODULE_8__content_delivery_output_service__["a" /* ContentDeliveryOutputService */]],
+            providers: [__WEBPACK_IMPORTED_MODULE_5__viewer_detection_service__["a" /* ViewerDetectionService */], __WEBPACK_IMPORTED_MODULE_6__viewer_detection_output_service__["a" /* ViewerDetectionOutputService */]],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]]
         }), 
         __metadata('design:paramtypes', [])
@@ -416,7 +254,7 @@ var AppModule = (function () {
 
 /***/ }),
 
-/***/ 465:
+/***/ 462:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -446,8 +284,8 @@ var PersonComponent = (function () {
     PersonComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["U" /* Component */])({
             selector: 'app-person',
-            template: __webpack_require__(524),
-            styles: [__webpack_require__(521)]
+            template: __webpack_require__(521),
+            styles: [__webpack_require__(518)]
         }), 
         __metadata('design:paramtypes', [])
     ], PersonComponent);
@@ -457,7 +295,7 @@ var PersonComponent = (function () {
 
 /***/ }),
 
-/***/ 466:
+/***/ 463:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -473,7 +311,7 @@ var environment = {
 
 /***/ }),
 
-/***/ 520:
+/***/ 517:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(140)();
@@ -491,7 +329,7 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 521:
+/***/ 518:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(140)();
@@ -509,27 +347,27 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 523:
+/***/ 520:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <img src=\"../assets/advertima-logo.png\" alt=\"\">\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-xs-12\">\n      <div>\n        Previuos Content Avg Gender: {{stats.gender}}\n      </div>\n      <div>\n        Previuos Content Avg Age: {{stats.age}}\n      </div>\n      <div>\n        Previuos Content People: {{stats.people}}\n      </div>\n      <div>\n        Previuos Content Id: {{previousContentId}}\n      </div>\n      <hr>\n      <div>\n        Content Id: {{contentId}}\n      </div>\n      <div>\n        Content Name: {{contentName}}\n      </div>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <button class=\"btn btn-primary\" (click)=\"sendMsg('start')\">New Person</button>\n      <button class=\"btn btn-primary\" (click)=\"sendMsg('remove.one')\">Remove Random Person</button>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n      <div class=\"panel panel-default\" *ngIf=\"content\">\n        <img class=\"content-image\" [src]=\"content\">\n      </div>\n    </div>\n  </div>\n\n  <div class=\"row\">\n    <div class=\"col-md-3\" *ngFor=\"let viewer of viewers\">\n      <app-person [viewer]=\"viewer\">\n      </app-person>\n    </div>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n      <img src=\"../assets/advertima-logo.png\" alt=\"\">\r\n    </div>\r\n  </div>\r\n  <div>{{statusText}}</div>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
-/***/ 524:
+/***/ 521:
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"viewer\" class=\"panel panel-default\">\n  <div class=\"panel-heading\">\n      {{viewer.rolling_expected_values.gender}}, {{viewer.rolling_expected_values.age}} years old\n  </div>\n  <div class=\"panel-body\">\n    <p>\n      Id: {{viewer.person_id}}\n    </p>\n    <p>\n      Came on: {{getTime(viewer.local_timestamp)}}\n    </p>\n  </div>\n</div>\n"
+module.exports = "<div *ngIf=\"viewer\" class=\"panel panel-default\">\r\n  <div class=\"panel-heading\">\r\n      {{viewer.rolling_expected_values.gender}}, {{viewer.rolling_expected_values.age}} years old\r\n  </div>\r\n  <div class=\"panel-body\">\r\n    <p>\r\n      Id: {{viewer.person_id}}\r\n    </p>\r\n    <p>\r\n      Came on: {{getTime(viewer.local_timestamp)}}\r\n    </p>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ 805:
+/***/ 803:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(355);
+module.exports = __webpack_require__(352);
 
 
 /***/ })
 
-},[805]);
+},[803]);
 //# sourceMappingURL=main.bundle.js.map

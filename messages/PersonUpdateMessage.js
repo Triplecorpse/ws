@@ -1,6 +1,6 @@
-import {generateId} from '../services/idGenerator';
+const generateId = require( '../services/idGenerator');
 
-export default class PersonUpdateMessage {
+module.exports = class PersonUpdateMessage {
     constructor(age, gender, position) {
         age = age || +(Math.random() * 100).toFixed(0) + 10;
         position = position || {x: 0, y: 0, z: 0};

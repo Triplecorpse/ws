@@ -1,4 +1,4 @@
-export default class ManifestMessage {
+module.exports = class ManifestMessage {
     constructor() {
         this.data = {
             applications: [

@@ -4,49 +4,6 @@
       <img src="../assets/advertima-logo.png" alt="">
     </div>
   </div>
-  <div class="row">
-    <div class="col-xs-12">
-      <div>
-        Previuos Content Avg Gender: {{stats.gender}}
-      </div>
-      <div>
-        Previuos Content Avg Age: {{stats.age}}
-      </div>
-      <div>
-        Previuos Content People: {{stats.people}}
-      </div>
-      <div>
-        Previuos Content Id: {{previousContentId}}
-      </div>
-      <hr>
-      <div>
-        Content Id: {{contentId}}
-      </div>
-      <div>
-        Content Name: {{contentName}}
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <button class="btn btn-primary" (click)="sendMsg('start')">New Person</button>
-      <button class="btn btn-primary" (click)="sendMsg('remove.one')">Remove Random Person</button>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-12">
-      <div class="panel panel-default" *ngIf="content">
-        <img class="content-image" [src]="content">
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-3" *ngFor="let viewer of viewers">
-      <app-person [viewer]="viewer">
-      </app-person>
-    </div>
-  </div>
+  <div>{{statusText}}</div>
 </div>
 
