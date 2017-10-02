@@ -2,121 +2,71 @@ const express = require('express');
 const fs = require('fs');
 const app = express();
 const expressWs = require('express-ws')(app);
-const Viewer = require('./Viewer');
-const Content = require('./Content');
-let viewers = [];
-let viewerTimer;
-let contentTimer;
-let isContentTimerStarted = false;
+const viewers = [];
+
+import ManifestMessage from 'messages/ManifestMessage';
+import PersonAliveMessage from 'messages/PersonAliveMessage';
+import PersonUpdateMessage from 'messages/PersonUpdateMessage';
 
 app.use(express.static('public/dist'));
 
 app.get('/', function (req, res) {
-  fs.readFile('public/dist/index.html', 'UTF8', (err, file) => {
-    if (!err) {
-      res.send(file)
-    } else {
-      res.status(500).send(err)
-    }
-  });
+    fs.readFile('public/dist/index.html', 'UTF8', (err, file) => {
+        if (!err) {
+            res.send(file)
+        } else {
+            res.status(500).send(err)
+        }
+    });
 });
 
 app.ws('/', function (ws) {
-  ws.on('message', function (msg) {
-    const message = JSON.parse(msg);
+    ws.on('message', function (msg) {
+        const message = JSON.parse(msg);
 
-    switch (message.message) {
-      case 'start':
-        addViewer();
-        if (!viewerTimer) {
-          startViewerStream(ws);
+        switch (message.name) {
+            case 'request_manifest':
+                startManifestStream(ws);
+                startPersonUpdateStream(ws);
+                startPersonAliveStream(ws);
+                break;
         }
-        break;
-      case 'stop':
-        stopStream(ws);
-        break;
-      case 'remove.one':
-        removeOnePerson(ws, Math.floor(Math.random() * viewers.length));
-        break;
-    }
-  });
+    });
 });
 
-app.ws('/show-content', function (ws) {
-  ws.on('message', function (msg) {
-    const message = JSON.parse(msg);
+function addViewer(age, gender, position) {
+    const viewer = new PersonUpdateMessage(age, gender, position);
 
-    switch (message.message) {
-      case 'start':
-        if (!isContentTimerStarted) {
-          startContentStream(ws);
-        }
-        break;
-    }
-  });
-});
-
-function addViewer() {
-  const viewer = new Viewer();
-  viewer.lifeTime = (57 * Math.random() + 3) * 1000;
-
-  viewers.push(viewer);
+    viewers.push(viewer);
 }
 
-function stopStream(ws) {
-  clearInterval(viewerTimer);
-  console.log('STOP');
-  viewers.splice(0);
-  ws.send('{"away": "-1"}');
+function startPersonUpdateStream(ws) {
+    setInterval(() => {
+        viewers.forEach(viewer => {
+            viewer.renewPutId();
+            ws.send(viewer);
+        })
+    }, 200)
 }
 
-function removeOnePerson(ws, index) {
-  if (!viewers.length || index > viewers.length - 1) {
-    return;
-  }
-  console.log('REMOVE');
-  viewers.splice(index, 1);
-  ws.send('{"away": "' + index + '"}');
+function startManifestStream(ws) {
+    const manifest = new ManifestMessage();
+
+    setInterval(() => {
+        ws.send(manifest);
+    }, 60000)
 }
 
-function startViewerStream(ws) {
-  viewerTimer = setInterval(() => {
-    const corpses = [];
+function startPersonAliveStream(ws) {
+    const personAliveMessage = new PersonAliveMessage();
 
-    viewers.forEach((viewer, index) => {
-      const currentDate = new Date().getTime();
+    personAliveMessage.setActiveIds(viewers.map(x => x.person_id));
 
-      if (currentDate - viewer.local_timestamp >= viewer.lifeTime) {
-        corpses.push(index);
-      }
-    });
-
-    corpses.forEach(index => {
-      viewers.splice(index, 1)
-    });
-
-    corpses.splice(0);
-    try {
-      ws.send(JSON.stringify(viewers));
-    } catch (e) {
-      console.error(e);
-    }
-  }, 200)
-}
-
-function startContentStream(ws) {
-  const content = new Content();
-  const lifeTime = (+(35 * Math.random()).toFixed(0) + 10) * 1000;
-  isContentTimerStarted = true;
-
-  clearTimeout(contentTimer);
-
-  ws.send(JSON.stringify(content));
-  contentTimer = setTimeout(() => {
-    startContentStream(ws)
-  }, lifeTime);
+    setInterval(() => {
+        ws.send(personAliveMessage);
+    }, 200)
 }
 
 app.listen(3333, function () {
-  console.log('Example app listening on port 3333!')
+    console.log('Example app listening on port 3333!')
 });

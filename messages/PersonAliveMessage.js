@@ -9,4 +9,25 @@ export default class PersonAliveMessage {
         this.subject = 'persons_alive';
         this.type = 'subject';
     }
+
+    addAliveId(id) {
+        this.data.person_ids.push(id);
+        return true;
+    }
+
+    removeAliveId(id) {
+        const idIndex = this.data.person_ids.indexOf(id);
+
+        if (id > -1) {
+            this.data.person_ids.splice(idIndex, 1);
+            return true;
+        }
+
+        return false;
+    }
+
+    setActiveIds(ids) {
+        this.data.person_ids = ids;
+        return true;
+    }
 }
