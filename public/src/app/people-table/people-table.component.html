@@ -1,0 +1,28 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Gender</th>
+    <th>Age</th>
+    <th>
+      <span class="label label-danger">x</span>
+      <span class="label label-success">y</span>
+      <span class="label label-primary">z</span>
+    </th>
+    <th>Looking at screen</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let person of people">
+    <td>{{person.person_id}}</td>
+    <td>{{person.rolling_expected_values.gender}}</td>
+    <td>{{person.rolling_expected_values.age}}</td>
+    <td>
+      <span class="label label-danger">{{person.coordinates.x}}</span>
+      <span class="label label-success">{{person.coordinates.y}}</span>
+      <span class="label label-primary">{{person.coordinates.z}}</span>
+    </td>
+    <td>{{person.looking_at_screen}}</td>
+  </tr>
+  </tbody>
+</table>

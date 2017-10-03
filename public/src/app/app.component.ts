@@ -1,6 +1,12 @@
 import {Component, OnDestroy} from '@angular/core';
 
 import {ViewerDetectionOutputService} from './viewer-detection-output.service';
+import {DataService} from "./data.service";
+
+import * as _ from 'lodash';
+import {IPersonUpdate} from "./i-person-update";
+import {IPersonAlive} from "./i-person-alive";
+import {IPersonForm} from "./i-person-form";
 
 @Component({
   selector: 'app-root',
@@ -8,7 +14,7 @@ import {ViewerDetectionOutputService} from './viewer-detection-output.service';
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent implements OnDestroy{
+export class AppComponent implements OnDestroy {
 
   private initMessage: any = {
     type: 'rpc',
@@ -17,13 +23,11 @@ export class AppComponent implements OnDestroy{
     data: {}
   };
   public statusText: string = 'Connecting...';
+  public qty = 1;
+  public people = [];
 
-  constructor(public viewerDetectionOutput: ViewerDetectionOutputService) {
-    viewerDetectionOutput.messages
-      .subscribe(msg => {
-        // console.log(msg);
-      });
-
+  constructor(public viewerDetectionOutput: ViewerDetectionOutputService,
+              public dataService: DataService) {
     viewerDetectionOutput.connection
       .subscribe((data) => {
         this.statusText = data.text;
@@ -31,6 +35,48 @@ export class AppComponent implements OnDestroy{
         viewerDetectionOutput.messages
           .next(this.initMessage);
       });
+
+    viewerDetectionOutput.manifest
+      .subscribe((data) => {
+      });
+
+    viewerDetectionOutput.person_update
+      .subscribe((person: IPersonUpdate) => {
+        const peopleIds = _.map(this.people, iterablePerson => iterablePerson.person_id);
+        const index = _.includes(peopleIds, person.person_id);
+
+        if (!index) {
+          this.people.push(person);
+        }
+      });
+
+    viewerDetectionOutput.persons_alive
+      .subscribe((data: IPersonAlive) => {
+        const ids = data.person_ids;
+      });
+
+  }
+
+  public submitPerson(personForm: IPersonForm): void {
+    this.dataService.sendPerson(personForm)
+      .subscribe(data => {
+      });
+  }
+
+  private cleanPeople(ids): void {
+    const indexesToDelete = [];
+
+    _.forEach(this.people, (person, index) => {
+      const includes = _.includes(ids, person.person_id);
+
+      if (!includes) {
+        indexesToDelete.push(index);
+      }
+    });
+
+    _.forEach(indexesToDelete, index => {
+      this.people.splice(index, 1);
+    });
   }
 
   ngOnDestroy() {

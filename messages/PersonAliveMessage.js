@@ -30,4 +30,4 @@ module.exports = class PersonAliveMessage {
         this.data.person_ids = ids;
         return true;
     }
-}
+};

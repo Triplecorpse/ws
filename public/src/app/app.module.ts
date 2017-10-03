@@ -9,18 +9,21 @@ import {ViewerDetectionService} from './viewer-detection.service';
 import {ViewerDetectionOutputService} from './viewer-detection-output.service';
 
 import {PersonComponent} from './person/person.component';
+import {DataService} from "./data.service";
+import { PeopleTableComponent } from './people-table/people-table.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PersonComponent
+    PersonComponent,
+    PeopleTableComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule
   ],
-  providers: [ViewerDetectionService, ViewerDetectionOutputService],
+  providers: [ViewerDetectionService, ViewerDetectionOutputService, DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

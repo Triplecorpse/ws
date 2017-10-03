@@ -54,4 +54,4 @@ module.exports = class ManifestMessage {
         this.subject = 'manifest';
         this.type = 'subject';
     }
-}
+};

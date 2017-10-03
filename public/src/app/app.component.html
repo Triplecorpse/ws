@@ -10,53 +10,83 @@
       <div class="panel panel-default">
         <div class="panel-heading">New Person(s)</div>
         <div class="panel-body">
-          <form>
+          <form id="person-form" #newPersonForm="ngForm" (ngSubmit)="submitPerson(newPersonForm.value)">
             <div class="col-xs-6">
               <p class="group-header">Gender: </p>
               <div class="form-group">
-                <label class="radio-inline"><input type="radio" name="gender" value="male">Male</label>
-                <label class="radio-inline"><input type="radio" name="gender" value="female">Female</label>
-                <label class="radio-inline"><input type="radio" name="gender" value="random" checked>Hermaphrodite
+                <label class="radio-inline"><input type="radio" name="gender" value="male" [ngModel]>Male</label>
+                <label class="radio-inline"><input type="radio" name="gender" value="female" [ngModel]>Female</label>
+                <label class="radio-inline"><input type="radio" name="gender" value="random" [ngModel]="'random'">Hermaphrodite
                   (randomize)</label>
               </div>
             </div>
             <div class="col-xs-6">
               <p class="group-header">Age: </p>
-              <div class="form-group">
-                <div class="col-xs-6">
+              <div class="col-xs-6">
+                <div class="form-group">
                   <label for="value">Value</label>
-                  <input type="number" class="form-control" id="value" value="30" step=".01">
+                  <input type="number" class="form-control" id="value" step=".01" min="1" [ngModel]="30"
+                         name="ageValue">
                 </div>
               </div>
-              <div class="form-group">
-                <div class="col-xs-6">
-                  <label for="deviation">Deviation</label>
-                  <input type="number" class="form-control" id="deviation" value="1" step=".01">
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <label for="ADeviation">Deviation</label>
+                  <input type="number" class="form-control" id="ADeviation" step=".01" min="0" [ngModel]="1"
+                         name="ageDeviation">
                 </div>
               </div>
             </div>
             <div class="col-xs-6 separator-top">
               <p class="group-header">Position</p>
-              <div class="col-xs-4">
-                <label for="y">X</label>
-                <input type="number" class="form-control" id="x" value="0" step=".01">
+              <div class="col-xs-3">
+                <label for="x">X</label>
+                <input type="number" class="form-control" id="x" step=".01" min="0" [ngModel]="0" name="posX">
               </div>
-              <div class="col-xs-4">
-                <label for="x">Y</label>
-                <input type="number" class="form-control" id="y" value="0" step=".01">
+              <div class="col-xs-3">
+                <label for="y">Y</label>
+                <input type="number" class="form-control" id="y" step=".01" min="0" [ngModel]="0" name="posY">
               </div>
-              <div class="col-xs-4">
+              <div class="col-xs-3">
                 <label for="z">Z</label>
-                <input type="number" class="form-control" id="z" value="0" step=".01">
+                <input type="number" class="form-control" id="z" step=".01" min="0" [ngModel]="0" name="posZ">
+              </div>
+              <div class="col-xs-3">
+                <div class="form-group">
+                  <label for="PDeviation">Deviation</label>
+                  <input type="number" class="form-control" id="PDeviation" step=".01" min="0" [ngModel]="1"
+                         name="posDeviation">
+                </div>
               </div>
             </div>
             <div class="col-xs-6 separator-top">
               <p class="group-header">Other Options</p>
-              <label class="checkbox-inline"><input type="checkbox" value="">Looking at Screen</label>
+              <label class="checkbox-inline"><input type="checkbox" name="lookingAtScreen" [ngModel]="false">Looking at Screen</label>
             </div>
           </form>
         </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-xs-2 col-xs-offset-8">
+              <button class="btn btn-primary btn-block" type="submit" form="person-form">
+                <span *ngIf="qty === 1">Launch person</span>
+                <span *ngIf="qty > 1">Launch people</span>
+              </button>
+            </div>
+            <div class="col-xs-2">
+              <div class="input-group">
+                <span class="input-group-addon">Quantity</span>
+                <input type="number" step="1" class="form-control" min="1" required [(ngModel)]="qty">
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <app-people-table [people]="people"></app-people-table>
     </div>
   </div>
 </div>

@@ -36,7 +36,6 @@ export class ViewerDetectionService {
 
     let observer = {
       next: (data: Object) => {
-        console.log(ws.readyState, WebSocket.OPEN);
         if (ws.readyState === WebSocket.OPEN) {
           ws.send(JSON.stringify(data));
         }

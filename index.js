@@ -2,12 +2,12 @@ const express = require('express');
 const fs = require('fs');
 const app = express();
 const expressWs = require('express-ws')(app);
-const people = [];
 const timers = {};
 
 const ManifestMessage = require('./messages/ManifestMessage');
 const PersonAliveMessage = require('./messages/PersonAliveMessage');
 const PersonUpdateMessage = require('./messages/PersonUpdateMessage');
+const people = [new PersonUpdateMessage(), new PersonUpdateMessage(), new PersonUpdateMessage()];
 
 app.use(express.static('public/dist'));
 expressWs.getWss().on('connection', function (ws) {
@@ -73,6 +73,7 @@ function startManifestStream(ws) {
 
     timers.manifest = setInterval(() => {
         try {
+            console.log(manifest);
             ws.send(JSON.stringify(manifest));
         } catch (e) {
             console.log('Error, Manifest Stream');
@@ -84,7 +85,7 @@ function startManifestStream(ws) {
 function startPersonAliveStream(ws) {
     const personAliveMessage = new PersonAliveMessage();
 
-    personAliveMessage.setActiveIds(people.map(x => x.person_id));
+    personAliveMessage.setActiveIds(people.map(x => x.data.person_id));
 
     timers.person_alive = setInterval(() => {
         try {
@@ -103,10 +104,10 @@ function startPersonUpdateStream(ws) {
                 people.forEach(person_update => {
                     person_update.renewPutId();
                     ws.send(JSON.stringify(person_update));
-                    restart(ws);
                 })
             }
         } catch (e) {
+            restart(ws);
             console.log('Error, Person Update Stream')
         }
     }, 200)
