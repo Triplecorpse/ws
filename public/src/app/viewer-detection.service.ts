@@ -6,7 +6,7 @@ export class ViewerDetectionService {
 
   private subject: Rx.Subject<MessageEvent>;
   public connection: Rx.ReplaySubject<any>;
-  private a;
+  public ws;
 
   constructor() {
     this.connection = new Rx.ReplaySubject();
@@ -25,6 +25,7 @@ export class ViewerDetectionService {
     ws.onopen = () => {
       this.connection.next({text: 'Connection established'});
     };
+    this.ws = ws;
 
     let observable = Rx.Observable.create((obs: Rx.Observer<MessageEvent>) => {
       ws.onmessage = obs.next.bind(obs);

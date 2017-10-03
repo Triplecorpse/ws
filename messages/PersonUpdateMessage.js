@@ -35,4 +35,4 @@ module.exports = class PersonUpdateMessage {
     renewPutId() {
         this.data.person_put_id = generateId();
     }
-}
+};

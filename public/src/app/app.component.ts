@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 
 import {ViewerDetectionOutputService} from './viewer-detection-output.service';
 
@@ -8,7 +8,7 @@ import {ViewerDetectionOutputService} from './viewer-detection-output.service';
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent {
+export class AppComponent implements OnDestroy{
 
   private initMessage: any = {
     type: 'rpc',
@@ -28,13 +28,14 @@ export class AppComponent {
       .subscribe((data) => {
         this.statusText = data.text;
 
-        console.log(new Date());
-
-        setTimeout(() => {
-          viewerDetectionOutput.messages
-            .next(this.initMessage);
-        }, 1000)
+        viewerDetectionOutput.messages
+          .next(this.initMessage);
       });
   }
 
+  ngOnDestroy() {
+    this.viewerDetectionOutput.messages.unsubscribe();
+    this.viewerDetectionOutput.messages.complete();
+    this.viewerDetectionOutput.ws.close();
+  }
 }

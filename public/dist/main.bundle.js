@@ -23,6 +23,7 @@ var ViewerDetectionOutputService = (function () {
     function ViewerDetectionOutputService(wsService) {
         this.wsService = wsService;
         this.connection = this.wsService.connection;
+        this.ws = this.wsService.ws;
         this.messages = wsService
             .connect(viewerUrl)
             .map(function (response) {
@@ -67,10 +68,6 @@ var ViewerDetectionService = (function () {
     ViewerDetectionService.prototype.connect = function (url) {
         if (!this.subject) {
             this.subject = this.create(url);
-            if (!this.subject.hasError) {
-            }
-            else {
-            }
         }
         return this.subject;
     };
@@ -80,6 +77,7 @@ var ViewerDetectionService = (function () {
         ws.onopen = function () {
             _this.connection.next({ text: 'Connection established' });
         };
+        this.ws = ws;
         var observable = __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__["Observable"].create(function (obs) {
             ws.onmessage = obs.next.bind(obs);
             ws.onerror = obs.error.bind(obs);
@@ -177,13 +175,15 @@ var AppComponent = (function () {
         viewerDetectionOutput.connection
             .subscribe(function (data) {
             _this.statusText = data.text;
-            console.log(new Date());
-            setTimeout(function () {
-                viewerDetectionOutput.messages
-                    .next(_this.initMessage);
-            }, 1000);
+            viewerDetectionOutput.messages
+                .next(_this.initMessage);
         });
     }
+    AppComponent.prototype.ngOnDestroy = function () {
+        this.viewerDetectionOutput.messages.unsubscribe();
+        this.viewerDetectionOutput.messages.complete();
+        this.viewerDetectionOutput.ws.close();
+    };
     AppComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["U" /* Component */])({
             selector: 'app-root',
@@ -319,7 +319,7 @@ exports = module.exports = __webpack_require__(140)();
 
 
 // module
-exports.push([module.i, ".content-image {\n  max-width: 100%;\n  max-height: 300px;\n  margin: 20px auto;\n  display: block; }\n", ""]);
+exports.push([module.i, ".group-header {\n  border-bottom: 1px solid lightgray; }\n\n.separator-top {\n  margin-top: 20px; }\n", ""]);
 
 // exports
 
@@ -350,7 +350,7 @@ module.exports = module.exports.toString();
 /***/ 520:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n      <img src=\"../assets/advertima-logo.png\" alt=\"\">\r\n    </div>\r\n  </div>\r\n  <div>{{statusText}}</div>\r\n</div>\r\n\r\n"
+module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n      <img src=\"../assets/advertima-logo.png\" alt=\"\">\r\n    </div>\r\n  </div>\r\n  <div>{{statusText}}</div>\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"panel panel-default\">\r\n        <div class=\"panel-heading\">New Person(s)</div>\r\n        <div class=\"panel-body\">\r\n          <form>\r\n            <div class=\"col-xs-6\">\r\n              <p class=\"group-header\">Gender: </p>\r\n              <div class=\"form-group\">\r\n                <label class=\"radio-inline\"><input type=\"radio\" name=\"gender\" value=\"male\">Male</label>\r\n                <label class=\"radio-inline\"><input type=\"radio\" name=\"gender\" value=\"female\">Female</label>\r\n                <label class=\"radio-inline\"><input type=\"radio\" name=\"gender\" value=\"random\" checked>Hermaphrodite\r\n                  (randomize)</label>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-xs-6\">\r\n              <p class=\"group-header\">Age: </p>\r\n              <div class=\"form-group\">\r\n                <div class=\"col-xs-6\">\r\n                  <label for=\"value\">Value</label>\r\n                  <input type=\"number\" class=\"form-control\" id=\"value\" value=\"30\" step=\".01\">\r\n                </div>\r\n              </div>\r\n              <div class=\"form-group\">\r\n                <div class=\"col-xs-6\">\r\n                  <label for=\"deviation\">Deviation</label>\r\n                  <input type=\"number\" class=\"form-control\" id=\"deviation\" value=\"1\" step=\".01\">\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-xs-6 separator-top\">\r\n              <p class=\"group-header\">Position</p>\r\n              <div class=\"col-xs-4\">\r\n                <label for=\"y\">X</label>\r\n                <input type=\"number\" class=\"form-control\" id=\"x\" value=\"0\" step=\".01\">\r\n              </div>\r\n              <div class=\"col-xs-4\">\r\n                <label for=\"x\">Y</label>\r\n                <input type=\"number\" class=\"form-control\" id=\"y\" value=\"0\" step=\".01\">\r\n              </div>\r\n              <div class=\"col-xs-4\">\r\n                <label for=\"z\">Z</label>\r\n                <input type=\"number\" class=\"form-control\" id=\"z\" value=\"0\" step=\".01\">\r\n              </div>\r\n            </div>\r\n            <div class=\"col-xs-6 separator-top\">\r\n              <p class=\"group-header\">Other Options</p>\r\n              <label class=\"checkbox-inline\"><input type=\"checkbox\" value=\"\">Looking at Screen</label>\r\n            </div>\r\n          </form>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n"
 
 /***/ }),
 

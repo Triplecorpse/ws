@@ -2,14 +2,15 @@ const express = require('express');
 const fs = require('fs');
 const app = express();
 const expressWs = require('express-ws')(app);
-const viewers = [];
+const people = [];
+const timers = {};
 
 const ManifestMessage = require('./messages/ManifestMessage');
 const PersonAliveMessage = require('./messages/PersonAliveMessage');
 const PersonUpdateMessage = require('./messages/PersonUpdateMessage');
 
 app.use(express.static('public/dist'));
-expressWs.getWss().on('connection', function(ws) {
+expressWs.getWss().on('connection', function (ws) {
     console.log('connection open', new Date());
 });
 
@@ -26,21 +27,37 @@ app.get('/', function (req, res) {
 app.ws('/', function (ws) {
     ws.on('message', function (msg) {
         const message = JSON.parse(msg);
-        switch (message.name) {
+
+        switch (message.method_name) {
             case 'request_manifest':
                 sendStartPoint(ws, message.message_id);
-                startManifestStream(ws);
-                startPersonUpdateStream(ws);
-                startPersonAliveStream(ws);
+                restart(ws);
                 break;
         }
+    });
+
+    ws.on('close', function (ws) {
+        for (let timer in timers) {
+            clearInterval(timers[timer]);
+        }
+        console.log('connection closed', new Date());
     });
 });
 
 function addViewer(age, gender, position) {
     const viewer = new PersonUpdateMessage(age, gender, position);
 
-    viewers.push(viewer);
+    people.push(viewer);
+}
+
+function restart(ws) {
+    for (let timer in timers) {
+        clearInterval(timers[timer]);
+    }
+
+    startManifestStream(ws);
+    startPersonUpdateStream(ws);
+    startPersonAliveStream(ws);
 }
 
 function sendStartPoint(ws, id) {
@@ -48,33 +65,50 @@ function sendStartPoint(ws, id) {
 
     manifest.type = 'rpc_response';
     manifest.message_id = id;
-    ws.send(manifest);
+    ws.send(JSON.stringify(manifest));
 }
 
 function startManifestStream(ws) {
     const manifest = new ManifestMessage();
 
-    setInterval(() => {
-        ws.send(manifest);
+    timers.manifest = setInterval(() => {
+        try {
+            ws.send(JSON.stringify(manifest));
+        } catch (e) {
+            console.log('Error, Manifest Stream');
+            restart(ws);
+        }
     }, 60000)
 }
 
 function startPersonAliveStream(ws) {
     const personAliveMessage = new PersonAliveMessage();
 
-    personAliveMessage.setActiveIds(viewers.map(x => x.person_id));
+    personAliveMessage.setActiveIds(people.map(x => x.person_id));
 
-    setInterval(() => {
-        ws.send(personAliveMessage);
+    timers.person_alive = setInterval(() => {
+        try {
+            ws.send(JSON.stringify(personAliveMessage));
+        } catch (e) {
+            console.log('Error, Person Alive Stream',e);
+            restart(ws);
+        }
     }, 200)
 }
 
 function startPersonUpdateStream(ws) {
-    setInterval(() => {
-        viewers.forEach(viewer => {
-            viewer.renewPutId();
-            ws.send(viewer);
-        })
+    timers.person_update = setInterval(() => {
+        try {
+            if (people.length) {
+                people.forEach(person_update => {
+                    person_update.renewPutId();
+                    ws.send(JSON.stringify(person_update));
+                    restart(ws);
+                })
+            }
+        } catch (e) {
+            console.log('Error, Person Update Stream')
+        }
     }, 200)
 }
 

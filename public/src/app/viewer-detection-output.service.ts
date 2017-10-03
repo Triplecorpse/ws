@@ -20,4 +20,5 @@ export class ViewerDetectionOutputService {
 
   public messages: Subject<any>;
   public connection: Observable<any> = this.wsService.connection;
+  public ws = this.wsService.ws;
 }
