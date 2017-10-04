@@ -5,24 +5,14 @@ const timers = require('../services/timers');
 
 const manifest = new ManifestMessage();
 
-function restart(ws) {
-    console.log('WS tries to reconnect');
-    for (let timer in timers) {
-        clearInterval(timers[timer]);
-    }
-
-    startManifestStream(ws);
-    startPersonUpdateStream(ws);
-    startPersonAliveStream(ws);
-}
-
 function sendStartPoint(ws, id) {
-    manifest.type = 'rpc_response';
-    manifest.message_id = id;
-    manifest.success = true;
-    ws.send(JSON.stringify(manifest));
+    const localManifest = new ManifestMessage();
+
+    localManifest.type = 'rpc_response';
+    localManifest.message_id = id;
+    localManifest.success = true;
+    ws.send(JSON.stringify(localManifest));
     manifest.subject = 'manifest';
-    delete manifest.success;
 }
 
 function startManifestStream(ws) {
@@ -32,7 +22,6 @@ function startManifestStream(ws) {
             manifest.update();
         } catch (e) {
             console.log('Error, Manifest Stream');
-            restart(ws);
         }
     }
 }
@@ -44,7 +33,6 @@ function startPersonAliveStream(ws) {
             ws.send(JSON.stringify(personAlive));
         } catch (e) {
             console.log('Error, Person Alive Stream', e);
-            restart(ws);
         }
     }
 }
@@ -55,6 +43,8 @@ function startPersonUpdateStream(ws) {
             if (people.getPeople().length) {
                 people.getPeople().forEach(person_update => {
                     let rolling_expected_values = person_update.data.rolling_expected_values;
+                    let deviations = person_update.deviations;
+
 
                     person_update.renewPutId();
                     person_update.deviateAge();
@@ -65,14 +55,15 @@ function startPersonUpdateStream(ws) {
                         delete person_update.data.rolling_expected_values;
                     }
 
+                    delete person_update.deviations;
                     ws.send(JSON.stringify(person_update));
 
+                    person_update.deviations = deviations;
                     person_update.data.rolling_expected_values = rolling_expected_values;
                 })
             }
         } catch (e) {
             console.log('Error, Person Update Stream', e);
-            restart(ws);
         }
     }
 }
