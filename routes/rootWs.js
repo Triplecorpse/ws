@@ -1,33 +1,9 @@
 const ManifestMessage = require('../models/ManifestModel');
 const personAlive = require('../models/PersonAliveModel');
 const people = require('../models/PeopleModel');
+const timers = require('../services/timers');
 
-
-const timers = {};
-
-module.exports = app => {
-    app.ws('/', function (ws) {
-        ws.on('message', function (msg) {
-            const message = JSON.parse(msg);
-
-            switch (message.method_name) {
-                case 'request_manifest':
-                    sendStartPoint(ws, message.message_id);
-                    startManifestStream(ws);
-                    startPersonUpdateStream(ws);
-                    startPersonAliveStream(ws);
-                    break;
-            }
-        });
-
-        ws.on('close', function (ws) {
-            for (let timer in timers) {
-                clearInterval(timers[timer]);
-            }
-            console.log('connection closed', new Date());
-        });
-    });
-};
+const manifest = new ManifestMessage();
 
 function restart(ws) {
     console.log('WS tries to reconnect');
@@ -41,17 +17,16 @@ function restart(ws) {
 }
 
 function sendStartPoint(ws, id) {
-    const manifest = new ManifestMessage();
-
     manifest.type = 'rpc_response';
     manifest.message_id = id;
+    manifest.success = true;
     ws.send(JSON.stringify(manifest));
+    manifest.subject = 'manifest';
+    delete manifest.success;
 }
 
 function startManifestStream(ws) {
-    const manifest = new ManifestMessage();
-
-    timers.manifest = setInterval(() => {
+    return () => {
         try {
             ws.send(JSON.stringify(manifest));
             manifest.update();
@@ -59,23 +34,23 @@ function startManifestStream(ws) {
             console.log('Error, Manifest Stream');
             restart(ws);
         }
-    }, 60000)
+    }
 }
 
 function startPersonAliveStream(ws) {
-    timers.person_alive = setInterval(() => {
+    return () => {
         try {
             personAlive.setActiveIds(people.getPeople().map(x => x.data.person_id));
             ws.send(JSON.stringify(personAlive));
         } catch (e) {
-            console.log('Error, Person Alive Stream',e);
+            console.log('Error, Person Alive Stream', e);
             restart(ws);
         }
-    }, 200)
+    }
 }
 
 function startPersonUpdateStream(ws) {
-    timers.person_update = setInterval(() => {
+    return () => {
         try {
             if (people.getPeople().length) {
                 people.getPeople().forEach(person_update => {
@@ -99,5 +74,31 @@ function startPersonUpdateStream(ws) {
             console.log('Error, Person Update Stream', e);
             restart(ws);
         }
-    }, 200)
+    }
 }
+
+module.exports = app => {
+    app.ws('/', function (ws) {
+        ws.on('message', function (msg) {
+            const message = JSON.parse(msg);
+
+            switch (message.method_name) {
+                case 'request_manifest':
+                    sendStartPoint(ws, message.message_id);
+
+                    timers.addTimer({
+                        manifest: startManifestStream(ws),
+                        person_update: startPersonUpdateStream(ws),
+                        persons_alive: startPersonAliveStream(ws)
+                    });
+
+                    break;
+            }
+        });
+
+        ws.on('close', () => {
+            timers.clearTimer(ws.upgradeReq.headers['sec-websocket-key']);
+            console.log('connection closed, ws', new Date(), ws.upgradeReq.headers['sec-websocket-key']);
+        });
+    });
+};

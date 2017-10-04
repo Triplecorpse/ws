@@ -4,7 +4,6 @@ const fs = require('fs');
 module.exports = class ManifestModel {
     constructor() {
         this.data = manifest;
-        this.subject = 'manifest';
         this.type = 'subject';
     }
 
