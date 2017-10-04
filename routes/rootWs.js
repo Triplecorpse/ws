@@ -54,6 +54,7 @@ function startManifestStream(ws) {
     timers.manifest = setInterval(() => {
         try {
             ws.send(JSON.stringify(manifest));
+            manifest.update();
         } catch (e) {
             console.log('Error, Manifest Stream');
             restart(ws);
