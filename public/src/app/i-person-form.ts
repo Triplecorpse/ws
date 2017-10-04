@@ -6,5 +6,6 @@ export interface IPersonForm {
   posY: number,
   posZ: number,
   posDeviation: number,
-  lookingAtScreen: boolean
+  lookingAtScreen: boolean,
+  qty: number
 }

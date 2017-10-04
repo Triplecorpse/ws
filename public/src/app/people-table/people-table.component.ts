@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 import {IPersonUpdate} from "../i-person-update";
+import {DataService} from "../data.service";
 
 @Component({
   selector: 'app-people-table',
@@ -9,11 +10,16 @@ import {IPersonUpdate} from "../i-person-update";
 export class PeopleTableComponent implements OnInit {
   @Input() people: IPersonUpdate[];
 
-  constructor() {
+  constructor(public dataService: DataService) {
 
+  }
+
+  removePerson(id: string) {
+    console.log('called re,ove');
+    this.dataService.removePerson(id)
+      .subscribe();
   }
 
   ngOnInit() {
   }
-
 }

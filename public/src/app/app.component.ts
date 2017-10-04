@@ -47,20 +47,24 @@ export class AppComponent implements OnDestroy {
 
         if (!index) {
           this.people.push(person);
+        } else {
+          this.replacePerson(person.person_id, person);
         }
       });
 
     viewerDetectionOutput.persons_alive
       .subscribe((data: IPersonAlive) => {
         const ids = data.person_ids;
+
+        this.cleanPeople(ids);
       });
 
   }
 
   public submitPerson(personForm: IPersonForm): void {
-    this.dataService.sendPerson(personForm)
-      .subscribe(data => {
-      });
+    console.log('add person');
+    this.dataService.addPerson(personForm, this.qty)
+      .subscribe();
   }
 
   private cleanPeople(ids): void {
@@ -71,12 +75,19 @@ export class AppComponent implements OnDestroy {
 
       if (!includes) {
         indexesToDelete.push(index);
+        console.log(indexesToDelete);
       }
     });
 
     _.forEach(indexesToDelete, index => {
       this.people.splice(index, 1);
     });
+  }
+
+  private replacePerson(id, newPerson) {
+    const index = _.findIndex(this.people, person => person.person_id === id);
+
+    this.people[index] = newPerson;
   }
 
   ngOnDestroy() {

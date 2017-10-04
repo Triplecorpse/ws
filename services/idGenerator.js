@@ -14,7 +14,7 @@ function generateSequence(number) {
     let result = '';
 
     for (let i = 0; i < number; i++) {
-        const index = (Math.random() * length).toFixed(0) - 1;
+        const index = (Math.random() * (length - 1)).toFixed(0);
 
         result += symbols[index];
     }

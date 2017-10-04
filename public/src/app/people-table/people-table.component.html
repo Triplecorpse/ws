@@ -6,23 +6,35 @@
     <th>Age</th>
     <th>
       <span class="label label-danger">x</span>
+    </th>
+    <th>
       <span class="label label-success">y</span>
+    </th>
+    <th>
       <span class="label label-primary">z</span>
     </th>
-    <th>Looking at screen</th>
+    <th>Looking</th>
+    <th>Actions</th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let person of people">
-    <td>{{person.person_id}}</td>
+    <td><pre>{{person.person_id}}</pre></td>
     <td>{{person.rolling_expected_values.gender}}</td>
     <td>{{person.rolling_expected_values.age}}</td>
     <td>
       <span class="label label-danger">{{person.coordinates.x}}</span>
+    </td>
+    <td>
       <span class="label label-success">{{person.coordinates.y}}</span>
+    </td>
+    <td>
       <span class="label label-primary">{{person.coordinates.z}}</span>
     </td>
     <td>{{person.looking_at_screen}}</td>
+    <td>
+      <button class="btn btn-danger" (click)="removePerson(person.person_id)">X</button>
+    </td>
   </tr>
   </tbody>
 </table>

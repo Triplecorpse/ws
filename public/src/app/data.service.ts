@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Http, URLSearchParams} from "@angular/http";
+import {IPersonForm} from "./i-person-form";
 
 @Injectable()
 export class DataService {
@@ -10,8 +11,8 @@ export class DataService {
 
   constructor(public http: Http) { }
 
-  sendPerson(options: any) {
-    let search = new URLSearchParams();
+  addPerson(options: IPersonForm, qty: number) {
+    let search: URLSearchParams = new URLSearchParams();
 
     for (let option in options) {
       if (options.hasOwnProperty(option)) {
@@ -19,8 +20,16 @@ export class DataService {
       }
     }
 
-    console.log(options, search);
+    search.set('qty', qty.toString());
 
-    return this.http.get(this.api.newPerson, {search});
+    return this.http.get(this.api.newPerson + '/add', {search});
+  }
+
+  removePerson(id: string) {
+    let search: URLSearchParams = new URLSearchParams();
+
+    search.set('id', id);
+
+    return this.http.get(this.api.newPerson + '/remove', {search});
   }
 }

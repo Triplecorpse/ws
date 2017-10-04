@@ -1,11 +1,11 @@
 webpackJsonp([1,4],{
 
-/***/ 306:
+/***/ 202:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(289);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DataService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -25,15 +25,20 @@ var DataService = (function () {
             newPerson: '/person'
         };
     }
-    DataService.prototype.sendPerson = function (options) {
+    DataService.prototype.addPerson = function (options, qty) {
         var search = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* URLSearchParams */]();
         for (var option in options) {
             if (options.hasOwnProperty(option)) {
                 search.set(option, options[option]);
             }
         }
-        console.log(options, search);
-        return this.http.get(this.api.newPerson, { search: search });
+        search.set('qty', qty.toString());
+        return this.http.get(this.api.newPerson + '/add', { search: search });
+    };
+    DataService.prototype.removePerson = function (id) {
+        var search = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* URLSearchParams */]();
+        search.set('id', id);
+        return this.http.get(this.api.newPerson + '/remove', { search: search });
     };
     DataService = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(), 
@@ -211,7 +216,7 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dyna
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__viewer_detection_output_service__ = __webpack_require__(307);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__data_service__ = __webpack_require__(306);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__data_service__ = __webpack_require__(202);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(522);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
@@ -258,16 +263,20 @@ var AppComponent = (function () {
             if (!index) {
                 _this.people.push(person);
             }
+            else {
+                _this.replacePerson(person.person_id, person);
+            }
         });
         viewerDetectionOutput.persons_alive
             .subscribe(function (data) {
             var ids = data.person_ids;
+            _this.cleanPeople(ids);
         });
     }
     AppComponent.prototype.submitPerson = function (personForm) {
-        this.dataService.sendPerson(personForm)
-            .subscribe(function (data) {
-        });
+        console.log('add person');
+        this.dataService.addPerson(personForm, this.qty)
+            .subscribe();
     };
     AppComponent.prototype.cleanPeople = function (ids) {
         var _this = this;
@@ -278,9 +287,14 @@ var AppComponent = (function () {
                 indexesToDelete.push(index);
             }
         });
+        // console.log(indexesToDelete);
         __WEBPACK_IMPORTED_MODULE_3_lodash__["forEach"](indexesToDelete, function (index) {
             _this.people.splice(index, 1);
         });
+    };
+    AppComponent.prototype.replacePerson = function (id, newPerson) {
+        var index = __WEBPACK_IMPORTED_MODULE_3_lodash__["findIndex"](this.people, function (person) { return person.person_id === id; });
+        this.people[index] = newPerson;
     };
     AppComponent.prototype.ngOnDestroy = function () {
         this.viewerDetectionOutput.messages.unsubscribe();
@@ -309,12 +323,12 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(194);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(432);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(289);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(461);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__viewer_detection_service__ = __webpack_require__(308);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__viewer_detection_output_service__ = __webpack_require__(307);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__person_person_component__ = __webpack_require__(464);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__data_service__ = __webpack_require__(306);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__data_service__ = __webpack_require__(202);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__people_table_people_table_component__ = __webpack_require__(463);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -367,6 +381,7 @@ var AppModule = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_service__ = __webpack_require__(202);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PeopleTableComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -378,9 +393,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var PeopleTableComponent = (function () {
-    function PeopleTableComponent() {
+    function PeopleTableComponent(dataService) {
+        this.dataService = dataService;
     }
+    PeopleTableComponent.prototype.removePerson = function (id) {
+        console.log('called re,ove');
+        this.dataService.removePerson(id)
+            .subscribe();
+    };
     PeopleTableComponent.prototype.ngOnInit = function () {
     };
     __decorate([
@@ -393,9 +415,10 @@ var PeopleTableComponent = (function () {
             template: __webpack_require__(525),
             styles: [__webpack_require__(520)]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__data_service__["a" /* DataService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__data_service__["a" /* DataService */]) === 'function' && _a) || Object])
     ], PeopleTableComponent);
     return PeopleTableComponent;
+    var _a;
 }());
 //# sourceMappingURL=people-table.component.js.map
 
@@ -484,7 +507,7 @@ exports = module.exports = __webpack_require__(93)();
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "table.table > thead > tr > th {\n  width: 12.5%; }\n", ""]);
 
 // exports
 
@@ -515,21 +538,21 @@ module.exports = module.exports.toString();
 /***/ 524:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n      <img src=\"../assets/advertima-logo.png\" alt=\"\">\r\n    </div>\r\n  </div>\r\n  <div>{{statusText}}</div>\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"panel panel-default\">\r\n        <div class=\"panel-heading\">New Person(s)</div>\r\n        <div class=\"panel-body\">\r\n          <form id=\"person-form\" #newPersonForm=\"ngForm\" (ngSubmit)=\"submitPerson(newPersonForm.value)\">\r\n            <div class=\"col-xs-6\">\r\n              <p class=\"group-header\">Gender: </p>\r\n              <div class=\"form-group\">\r\n                <label class=\"radio-inline\"><input type=\"radio\" name=\"gender\" value=\"male\" [ngModel]>Male</label>\r\n                <label class=\"radio-inline\"><input type=\"radio\" name=\"gender\" value=\"female\" [ngModel]>Female</label>\r\n                <label class=\"radio-inline\"><input type=\"radio\" name=\"gender\" value=\"random\" [ngModel]=\"'random'\">Hermaphrodite\r\n                  (randomize)</label>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-xs-6\">\r\n              <p class=\"group-header\">Age: </p>\r\n              <div class=\"col-xs-6\">\r\n                <div class=\"form-group\">\r\n                  <label for=\"value\">Value</label>\r\n                  <input type=\"number\" class=\"form-control\" id=\"value\" step=\".01\" min=\"1\" [ngModel]=\"30\"\r\n                         name=\"ageValue\">\r\n                </div>\r\n              </div>\r\n              <div class=\"col-xs-6\">\r\n                <div class=\"form-group\">\r\n                  <label for=\"ADeviation\">Deviation</label>\r\n                  <input type=\"number\" class=\"form-control\" id=\"ADeviation\" step=\".01\" min=\"0\" [ngModel]=\"1\"\r\n                         name=\"ageDeviation\">\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-xs-6 separator-top\">\r\n              <p class=\"group-header\">Position</p>\r\n              <div class=\"col-xs-3\">\r\n                <label for=\"x\">X</label>\r\n                <input type=\"number\" class=\"form-control\" id=\"x\" step=\".01\" min=\"0\" [ngModel]=\"0\" name=\"posX\">\r\n              </div>\r\n              <div class=\"col-xs-3\">\r\n                <label for=\"y\">Y</label>\r\n                <input type=\"number\" class=\"form-control\" id=\"y\" step=\".01\" min=\"0\" [ngModel]=\"0\" name=\"posY\">\r\n              </div>\r\n              <div class=\"col-xs-3\">\r\n                <label for=\"z\">Z</label>\r\n                <input type=\"number\" class=\"form-control\" id=\"z\" step=\".01\" min=\"0\" [ngModel]=\"0\" name=\"posZ\">\r\n              </div>\r\n              <div class=\"col-xs-3\">\r\n                <div class=\"form-group\">\r\n                  <label for=\"PDeviation\">Deviation</label>\r\n                  <input type=\"number\" class=\"form-control\" id=\"PDeviation\" step=\".01\" min=\"0\" [ngModel]=\"1\"\r\n                         name=\"posDeviation\">\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-xs-6 separator-top\">\r\n              <p class=\"group-header\">Other Options</p>\r\n              <label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"lookingAtScreen\" [ngModel]=\"false\">Looking at Screen</label>\r\n            </div>\r\n          </form>\r\n        </div>\r\n        <div class=\"panel-footer\">\r\n          <div class=\"row\">\r\n            <div class=\"col-xs-2 col-xs-offset-8\">\r\n              <button class=\"btn btn-primary btn-block\" type=\"submit\" form=\"person-form\">\r\n                <span *ngIf=\"qty === 1\">Launch person</span>\r\n                <span *ngIf=\"qty > 1\">Launch people</span>\r\n              </button>\r\n            </div>\r\n            <div class=\"col-xs-2\">\r\n              <div class=\"input-group\">\r\n                <span class=\"input-group-addon\">Quantity</span>\r\n                <input type=\"number\" step=\"1\" class=\"form-control\" min=\"1\" required [(ngModel)]=\"qty\">\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <app-people-table [people]=\"people\"></app-people-table>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n"
+module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n      <img src=\"../assets/advertima-logo.png\" alt=\"\">\r\n    </div>\r\n  </div>\r\n  <div>{{statusText}}</div>\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"panel panel-default\">\r\n        <div class=\"panel-heading\">New Person(s)</div>\r\n        <div class=\"panel-body\">\r\n          <form id=\"person-form\" #newPersonForm=\"ngForm\" (ngSubmit)=\"submitPerson(newPersonForm.value)\">\r\n            <div class=\"col-xs-6\">\r\n              <p class=\"group-header\">Gender: </p>\r\n              <div class=\"form-group\">\r\n                <label class=\"radio-inline\"><input type=\"radio\" name=\"gender\" value=\"male\" [ngModel]>Male</label>\r\n                <label class=\"radio-inline\"><input type=\"radio\" name=\"gender\" value=\"female\" [ngModel]>Female</label>\r\n                <label class=\"radio-inline\"><input type=\"radio\" name=\"gender\" value=\"random\" [ngModel]=\"'random'\">Hermaphrodite\r\n                  (randomize)</label>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-xs-6\">\r\n              <p class=\"group-header\">Age: </p>\r\n              <div class=\"col-xs-6\">\r\n                <div class=\"form-group\">\r\n                  <label for=\"value\">Value</label>\r\n                  <input type=\"number\" class=\"form-control\" id=\"value\" step=\".01\" min=\"1\" [ngModel]=\"30\"\r\n                         name=\"ageValue\">\r\n                </div>\r\n              </div>\r\n              <div class=\"col-xs-6\">\r\n                <div class=\"form-group\">\r\n                  <label for=\"ADeviation\">Deviation</label>\r\n                  <input type=\"number\" class=\"form-control\" id=\"ADeviation\" step=\".01\" min=\"0\" [ngModel]=\"1\"\r\n                         name=\"ageDeviation\">\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-xs-6 separator-top\">\r\n              <p class=\"group-header\">Position</p>\r\n              <div class=\"col-xs-3\">\r\n                <label for=\"x\">X</label>\r\n                <input type=\"number\" class=\"form-control\" id=\"x\" step=\".01\" min=\"0\" [ngModel]=\"0\" name=\"posX\">\r\n              </div>\r\n              <div class=\"col-xs-3\">\r\n                <label for=\"y\">Y</label>\r\n                <input type=\"number\" class=\"form-control\" id=\"y\" step=\".01\" min=\"0\" [ngModel]=\"0\" name=\"posY\">\r\n              </div>\r\n              <div class=\"col-xs-3\">\r\n                <label for=\"z\">Z</label>\r\n                <input type=\"number\" class=\"form-control\" id=\"z\" step=\".01\" min=\"0\" [ngModel]=\"0\" name=\"posZ\">\r\n              </div>\r\n              <div class=\"col-xs-3\">\r\n                <div class=\"form-group\">\r\n                  <label for=\"PDeviation\">Deviation</label>\r\n                  <input type=\"number\" class=\"form-control\" id=\"PDeviation\" step=\".01\" min=\"0\" [ngModel]=\"1\"\r\n                         name=\"posDeviation\">\r\n                </div>\r\n              </div>\r\n            </div>\r\n            <div class=\"col-xs-6 separator-top\">\r\n              <p class=\"group-header\">Other Options</p>\r\n              <label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"lookingAtScreen\" [ngModel]=\"false\">Looking at Screen</label>\r\n            </div>\r\n          </form>\r\n        </div>\r\n        <div class=\"panel-footer\">\r\n          <div class=\"row\">\r\n            <div class=\"col-xs-2 col-xs-offset-8\">\r\n              <button class=\"btn btn-primary btn-block\" type=\"submit\" form=\"person-form\">\r\n                <span *ngIf=\"qty === 1\">Launch person</span>\r\n                <span *ngIf=\"qty > 1\">Launch people</span>\r\n              </button>\r\n            </div>\r\n            <div class=\"col-xs-2\">\r\n              <div class=\"input-group\">\r\n                <span class=\"input-group-addon\">Quantity</span>\r\n                <input type=\"number\" step=\"1\" class=\"form-control\" min=\"1\" required [(ngModel)]=\"qty\">\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <app-people-table [people]=\"people\"></app-people-table>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
 /***/ 525:
 /***/ (function(module, exports) {
 
-module.exports = "<table class=\"table\">\n  <thead>\n  <tr>\n    <th>Id</th>\n    <th>Gender</th>\n    <th>Age</th>\n    <th>\n      Position\n      <span class=\"label label-danger\">x</span>\n      <span class=\"label label-success\">y</span>\n      <span class=\"label label-primary\">z</span>\n    </th>\n    <th>Looking at screen</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let person of people\">\n    <td>{{person.person_id}}</td>\n    <td>{{person.rolling_expected_values.gender}}</td>\n    <td>{{person.rolling_expected_values.age}}</td>\n    <td>\n      <span class=\"label label-danger\">{{person.coordinates.x}}</span>\n      <span class=\"label label-success\">{{person.coordinates.y}}</span>\n      <span class=\"label label-primary\">{{person.coordinates.z}}</span>\n    </td>\n    <td>{{person.looking_at_screen}}</td>\n  </tr>\n  </tbody>\n</table>\n"
+module.exports = "<table class=\"table\">\n  <thead>\n  <tr>\n    <th>Id</th>\n    <th>Gender</th>\n    <th>Age</th>\n    <th>\n      <span class=\"label label-danger\">x</span>\n    </th>\n    <th>\n      <span class=\"label label-success\">y</span>\n    </th>\n    <th>\n      <span class=\"label label-primary\">z</span>\n    </th>\n    <th>Looking</th>\n    <th>Actions</th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let person of people\">\n    <td><pre>{{person.person_id}}</pre></td>\n    <td>{{person.rolling_expected_values.gender}}</td>\n    <td>{{person.rolling_expected_values.age}}</td>\n    <td>\n      <span class=\"label label-danger\">{{person.coordinates.x}}</span>\n    </td>\n    <td>\n      <span class=\"label label-success\">{{person.coordinates.y}}</span>\n    </td>\n    <td>\n      <span class=\"label label-primary\">{{person.coordinates.z}}</span>\n    </td>\n    <td>{{person.looking_at_screen}}</td>\n    <td>\n      <button class=\"btn btn-danger\" (click)=\"removePerson(person.person_id)\">X</button>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
 
 /***/ }),
 
 /***/ 526:
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"viewer\" class=\"panel panel-default\">\r\n  <div class=\"panel-heading\">\r\n      {{viewer.rolling_expected_values.gender}}, {{viewer.rolling_expected_values.age}} years old\r\n  </div>\r\n  <div class=\"panel-body\">\r\n    <p>\r\n      Id: {{viewer.person_id}}\r\n    </p>\r\n    <p>\r\n      Came on: {{getTime(viewer.local_timestamp)}}\r\n    </p>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div *ngIf=\"viewer\" class=\"panel panel-default\">\r\n  <div class=\"panel-heading\">\r\n    {{viewer.rolling_expected_values.gender}}, {{viewer.rolling_expected_values.devAge}} years old\r\n  </div>\r\n  <div class=\"panel-body\">\r\n    <p>\r\n      Id: {{viewer.person_id}}\r\n    </p>\r\n    <p>\r\n      Came on: {{getTime(viewer.local_timestamp)}}\r\n    </p>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
