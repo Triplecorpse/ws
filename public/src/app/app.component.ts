@@ -62,7 +62,6 @@ export class AppComponent implements OnDestroy {
   }
 
   public submitPerson(personForm: IPersonForm): void {
-    console.log('add person');
     this.dataService.addPerson(personForm, this.qty)
       .subscribe();
   }

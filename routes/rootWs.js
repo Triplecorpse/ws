@@ -13,7 +13,9 @@ module.exports = app => {
             switch (message.method_name) {
                 case 'request_manifest':
                     sendStartPoint(ws, message.message_id);
-                    restart(ws);
+                    startManifestStream(ws);
+                    startPersonUpdateStream(ws);
+                    startPersonAliveStream(ws);
                     break;
             }
         });
@@ -28,6 +30,7 @@ module.exports = app => {
 };
 
 function restart(ws) {
+    console.log('WS tries to reconnect');
     for (let timer in timers) {
         clearInterval(timers[timer]);
     }
@@ -75,14 +78,24 @@ function startPersonUpdateStream(ws) {
         try {
             if (people.getPeople().length) {
                 people.getPeople().forEach(person_update => {
+                    let rolling_expected_values = person_update.data.rolling_expected_values;
+
                     person_update.renewPutId();
                     person_update.deviateAge();
                     person_update.deviatePosition();
+                    person_update.restampTime();
+
+                    if (person_update.data.local_timestamp - person_update.deviations.initTimestamp <= 2000) {
+                        delete person_update.data.rolling_expected_values;
+                    }
+
                     ws.send(JSON.stringify(person_update));
+
+                    person_update.data.rolling_expected_values = rolling_expected_values;
                 })
             }
         } catch (e) {
-            console.log('Error, Person Update Stream');
+            console.log('Error, Person Update Stream', e);
             restart(ws);
         }
     }, 200)

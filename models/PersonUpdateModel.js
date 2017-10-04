@@ -39,7 +39,8 @@ module.exports = class PersonUpdateModel {
                 x: position.x,
                 y: position.y,
                 z: position.z
-            }
+            },
+            initTimestamp: new Date().getTime()
         }
     }
 
@@ -55,5 +56,9 @@ module.exports = class PersonUpdateModel {
         this.data.coordinates.x = deviate(+this.deviations.initPos.x, +this.deviations.devPosition);
         this.data.coordinates.y = deviate(+this.deviations.initPos.y, +this.deviations.devPosition);
         this.data.coordinates.z = deviate(+this.deviations.initPos.z, +this.deviations.devPosition);
+    }
+
+    restampTime() {
+        this.data.local_timestamp = new Date().getTime();
     }
 };
