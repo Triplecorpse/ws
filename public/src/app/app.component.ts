@@ -58,7 +58,6 @@ export class AppComponent implements OnDestroy {
 
         this.cleanPeople(ids);
       });
-
   }
 
   public submitPerson(personForm: IPersonForm): void {

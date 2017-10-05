@@ -6,7 +6,10 @@ import {IPersonForm} from "./i-person-form";
 export class DataService {
 
   private api = {
-    newPerson: '/person'
+    newPerson: '/person',
+    getManifest: '/manifest.json',
+    setManifest: '/manifest',
+    manifestSchema: '/manifest-schema.json'
   };
 
   constructor(public http: Http) { }
@@ -31,5 +34,17 @@ export class DataService {
     search.set('id', id);
 
     return this.http.get(this.api.newPerson + '/remove', {search});
+  }
+
+  getManifestSchema() {
+    return this.http.get(this.api.manifestSchema);
+  }
+
+  getManifest() {
+    return this.http.get(this.api.getManifest);
+  }
+
+  setManifest(manifest) {
+    return this.http.post(this.api.setManifest, {manifest});
   }
 }

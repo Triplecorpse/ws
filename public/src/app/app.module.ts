@@ -10,13 +10,15 @@ import {ViewerDetectionOutputService} from './viewer-detection-output.service';
 
 import {PersonComponent} from './person/person.component';
 import {DataService} from "./data.service";
-import { PeopleTableComponent } from './people-table/people-table.component';
+import {PeopleTableComponent} from './people-table/people-table.component';
+import {ManifestSetterComponent} from './manifest-setter/manifest-setter.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PersonComponent,
-    PeopleTableComponent
+    PeopleTableComponent,
+    ManifestSetterComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 webpackJsonp([1,4],{
 
-/***/ 202:
+/***/ 136:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22,7 +22,10 @@ var DataService = (function () {
     function DataService(http) {
         this.http = http;
         this.api = {
-            newPerson: '/person'
+            newPerson: '/person',
+            getManifest: '/manifest.json',
+            setManifest: '/manifest',
+            manifestSchema: '/manifest-schema.json'
         };
     }
     DataService.prototype.addPerson = function (options, qty) {
@@ -39,6 +42,15 @@ var DataService = (function () {
         var search = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* URLSearchParams */]();
         search.set('id', id);
         return this.http.get(this.api.newPerson + '/remove', { search: search });
+    };
+    DataService.prototype.getManifestSchema = function () {
+        return this.http.get(this.api.manifestSchema);
+    };
+    DataService.prototype.getManifest = function () {
+        return this.http.get(this.api.getManifest);
+    };
+    DataService.prototype.setManifest = function (manifest) {
+        return this.http.post(this.api.setManifest, { manifest: manifest });
     };
     DataService = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(), 
@@ -119,7 +131,7 @@ var ViewerDetectionOutputService = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__ = __webpack_require__(528);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__ = __webpack_require__(531);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ViewerDetectionService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -197,7 +209,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(441);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__(462);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(465);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(466);
 
 
 
@@ -216,8 +228,8 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dyna
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__viewer_detection_output_service__ = __webpack_require__(307);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__data_service__ = __webpack_require__(202);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(522);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__data_service__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(524);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -303,8 +315,8 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["U" /* Component */])({
             selector: 'app-root',
-            template: __webpack_require__(524),
-            styles: [__webpack_require__(519)]
+            template: __webpack_require__(526),
+            styles: [__webpack_require__(520)]
         }), 
         __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__viewer_detection_output_service__["a" /* ViewerDetectionOutputService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__viewer_detection_output_service__["a" /* ViewerDetectionOutputService */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__data_service__["a" /* DataService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__data_service__["a" /* DataService */]) === 'function' && _b) || Object])
     ], AppComponent);
@@ -319,16 +331,17 @@ var AppComponent = (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(432);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(289);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(461);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__viewer_detection_service__ = __webpack_require__(308);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__viewer_detection_output_service__ = __webpack_require__(307);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__person_person_component__ = __webpack_require__(464);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__data_service__ = __webpack_require__(202);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__people_table_people_table_component__ = __webpack_require__(463);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__person_person_component__ = __webpack_require__(465);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__data_service__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__people_table_people_table_component__ = __webpack_require__(464);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__manifest_setter_manifest_setter_component__ = __webpack_require__(463);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -349,6 +362,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var AppModule = (function () {
     function AppModule() {
     }
@@ -357,7 +371,8 @@ var AppModule = (function () {
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */],
                 __WEBPACK_IMPORTED_MODULE_7__person_person_component__["a" /* PersonComponent */],
-                __WEBPACK_IMPORTED_MODULE_9__people_table_people_table_component__["a" /* PeopleTableComponent */]
+                __WEBPACK_IMPORTED_MODULE_9__people_table_people_table_component__["a" /* PeopleTableComponent */],
+                __WEBPACK_IMPORTED_MODULE_10__manifest_setter_manifest_setter_component__["a" /* ManifestSetterComponent */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -380,7 +395,64 @@ var AppModule = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_service__ = __webpack_require__(202);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_service__ = __webpack_require__(136);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ManifestSetterComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var ManifestSetterComponent = (function () {
+    function ManifestSetterComponent(dataService) {
+        var _this = this;
+        this.dataService = dataService;
+        dataService.getManifestSchema()
+            .subscribe(function (schema) {
+            _this.schema = schema.text();
+        });
+        dataService.getManifest()
+            .subscribe(function (manifest) {
+            _this.manifest = manifest.text();
+        });
+    }
+    ManifestSetterComponent.prototype.saveManifest = function () {
+        this.dataService.setManifest(this.manifest)
+            .subscribe(function () {
+            alert('Manifest is saved');
+        }, function (error) {
+            alert('Manifest is NOT saved, llok the console');
+            console.error(error);
+        });
+    };
+    ManifestSetterComponent.prototype.ngOnInit = function () {
+    };
+    ManifestSetterComponent = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["U" /* Component */])({
+            selector: 'app-manifest-setter',
+            template: __webpack_require__(527),
+            styles: [__webpack_require__(521)]
+        }), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__data_service__["a" /* DataService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__data_service__["a" /* DataService */]) === 'function' && _a) || Object])
+    ], ManifestSetterComponent);
+    return ManifestSetterComponent;
+    var _a;
+}());
+//# sourceMappingURL=manifest-setter.component.js.map
+
+/***/ }),
+
+/***/ 464:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data_service__ = __webpack_require__(136);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PeopleTableComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -411,8 +483,8 @@ var PeopleTableComponent = (function () {
     PeopleTableComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["U" /* Component */])({
             selector: 'app-people-table',
-            template: __webpack_require__(525),
-            styles: [__webpack_require__(520)]
+            template: __webpack_require__(528),
+            styles: [__webpack_require__(522)]
         }), 
         __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__data_service__["a" /* DataService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__data_service__["a" /* DataService */]) === 'function' && _a) || Object])
     ], PeopleTableComponent);
@@ -423,7 +495,7 @@ var PeopleTableComponent = (function () {
 
 /***/ }),
 
-/***/ 464:
+/***/ 465:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -453,8 +525,8 @@ var PersonComponent = (function () {
     PersonComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["U" /* Component */])({
             selector: 'app-person',
-            template: __webpack_require__(526),
-            styles: [__webpack_require__(521)]
+            template: __webpack_require__(529),
+            styles: [__webpack_require__(523)]
         }), 
         __metadata('design:paramtypes', [])
     ], PersonComponent);
@@ -464,7 +536,7 @@ var PersonComponent = (function () {
 
 /***/ }),
 
-/***/ 465:
+/***/ 466:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -480,10 +552,10 @@ var environment = {
 
 /***/ }),
 
-/***/ 519:
+/***/ 520:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(93)();
+exports = module.exports = __webpack_require__(68)();
 // imports
 
 
@@ -498,10 +570,28 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 520:
+/***/ 521:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(93)();
+exports = module.exports = __webpack_require__(68)();
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ 522:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(68)();
 // imports
 
 
@@ -516,10 +606,10 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 521:
+/***/ 523:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(93)();
+exports = module.exports = __webpack_require__(68)();
 // imports
 
 
@@ -534,28 +624,35 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ 524:
+/***/ 526:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n      <img src=\"../assets/advertima-logo.png\" alt=\"\">\r\n    </div>\r\n  </div>\r\n  <div>{{statusText}}</div>\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"panel-group\">\r\n        <div class=\"panel panel-default\">\r\n          <div class=\"panel-heading\">\r\n            <h4 class=\"panel-title\">\r\n              <a data-toggle=\"collapse\" href=\"#collapseNewPerson\" aria-expanded=\"true\">New Person</a>\r\n            </h4>\r\n          </div>\r\n          <div id=\"collapseNewPerson\" class=\"panel-collapse collapse in\">\r\n            <div class=\"panel-body\">\r\n              <form id=\"person-form\" #newPersonForm=\"ngForm\" (ngSubmit)=\"submitPerson(newPersonForm.value)\">\r\n                <div class=\"col-xs-6\">\r\n                  <p class=\"group-header\">Gender: </p>\r\n                  <div class=\"form-group\">\r\n                    <label class=\"radio-inline\"><input type=\"radio\" name=\"gender\" value=\"male\" [ngModel]>Male</label>\r\n                    <label class=\"radio-inline\"><input type=\"radio\" name=\"gender\" value=\"female\"\r\n                                                       [ngModel]>Female</label>\r\n                    <label class=\"radio-inline\"><input type=\"radio\" name=\"gender\" value=\"random\" [ngModel]=\"'random'\">Hermaphrodite\r\n                      (randomize)</label>\r\n                  </div>\r\n                </div>\r\n                <div class=\"col-xs-6\">\r\n                  <p class=\"group-header\">Age: </p>\r\n                  <div class=\"col-xs-6\">\r\n                    <div class=\"form-group\">\r\n                      <label for=\"value\">Value</label>\r\n                      <input type=\"number\" class=\"form-control\" id=\"value\" step=\".1\" min=\"1\" [ngModel]=\"30\"\r\n                             name=\"ageValue\">\r\n                    </div>\r\n                  </div>\r\n                  <div class=\"col-xs-6\">\r\n                    <div class=\"form-group\">\r\n                      <label for=\"ADeviation\">Deviation</label>\r\n                      <input type=\"number\" class=\"form-control\" id=\"ADeviation\" step=\".1\" min=\"0\" [ngModel]=\"10\"\r\n                             name=\"ageDeviation\">\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n                <div class=\"col-xs-6 separator-top\">\r\n                  <p class=\"group-header\">Position</p>\r\n                  <div class=\"col-xs-3\">\r\n                    <label for=\"x\">X</label>\r\n                    <input type=\"number\" class=\"form-control\" id=\"x\" step=\".1\" min=\"0\" [ngModel]=\"0\" name=\"posX\">\r\n                  </div>\r\n                  <div class=\"col-xs-3\">\r\n                    <label for=\"y\">Y</label>\r\n                    <input type=\"number\" class=\"form-control\" id=\"y\" step=\".1\" min=\"0\" [ngModel]=\"0\" name=\"posY\">\r\n                  </div>\r\n                  <div class=\"col-xs-3\">\r\n                    <label for=\"z\">Z</label>\r\n                    <input type=\"number\" class=\"form-control\" id=\"z\" step=\".1\" min=\"0\" [ngModel]=\"0\" name=\"posZ\">\r\n                  </div>\r\n                  <div class=\"col-xs-3\">\r\n                    <div class=\"form-group\">\r\n                      <label for=\"PDeviation\">Deviation</label>\r\n                      <input type=\"number\" class=\"form-control\" id=\"PDeviation\" step=\".01\" min=\"0\" [ngModel]=\"1\"\r\n                             name=\"posDeviation\">\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n                <div class=\"col-xs-6 separator-top\">\r\n                  <p class=\"group-header\">Other Options</p>\r\n                  <label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"lookingAtScreen\" [ngModel]=\"false\">Looking\r\n                    at Screen</label>\r\n                </div>\r\n              </form>\r\n            </div>\r\n            <div class=\"panel-footer\">\r\n              <div class=\"row\">\r\n                <div class=\"col-xs-2 col-xs-offset-8\">\r\n                  <button class=\"btn btn-primary btn-block\" type=\"submit\" form=\"person-form\">\r\n                    <span *ngIf=\"qty === 1\">Launch person</span>\r\n                    <span *ngIf=\"qty > 1\">Launch people</span>\r\n                  </button>\r\n                </div>\r\n                <div class=\"col-xs-2\">\r\n                  <div class=\"input-group\">\r\n                    <span class=\"input-group-addon\">Quantity</span>\r\n                    <input type=\"number\" step=\"1\" class=\"form-control\" min=\"1\" required [(ngModel)]=\"qty\">\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"panel-group\">\r\n        <div class=\"panel panel-default\">\r\n          <div class=\"panel-heading\">\r\n            <h4 class=\"panel-title\">\r\n              <a data-toggle=\"collapse\" href=\"#collapsePeople\" aria-expanded=\"true\">People List</a>\r\n            </h4>\r\n          </div>\r\n          <div id=\"collapsePeople\" class=\"panel-collapse collapse in\">\r\n            <div class=\"panel-body\">\r\n              <app-people-table [people]=\"people\"></app-people-table>\r\n            </div>\r\n            <div class=\"panel-footer\">\r\n              <div class=\"row\">\r\n                <div class=\"col-xs-2 col-xs-offset-8\">\r\n                  <button class=\"btn btn-primary btn-block\" type=\"submit\" form=\"person-form\">\r\n                    <span *ngIf=\"qty === 1\">Launch person</span>\r\n                    <span *ngIf=\"qty > 1\">Launch people</span>\r\n                  </button>\r\n                </div>\r\n                <div class=\"col-xs-2\">\r\n                  <div class=\"input-group\">\r\n                    <span class=\"input-group-addon\">Quantity</span>\r\n                    <input type=\"number\" step=\"1\" class=\"form-control\" min=\"1\" required [(ngModel)]=\"qty\">\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n      <img src=\"../assets/advertima-logo.png\" alt=\"\">\r\n    </div>\r\n  </div>\r\n  <div>{{statusText}}</div>\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"panel-group\">\r\n        <div class=\"panel panel-default\">\r\n          <div class=\"panel-heading\">\r\n            <h4 class=\"panel-title\">\r\n              <a data-toggle=\"collapse\" href=\"#collapseManifest\" aria-expanded=\"true\">Set up Manifest</a>\r\n            </h4>\r\n          </div>\r\n          <div id=\"collapseManifest\" class=\"panel-collapse collapse\">\r\n            <div class=\"panel-body\">\r\n              <app-manifest-setter></app-manifest-setter>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"panel-group\">\r\n        <div class=\"panel panel-default\">\r\n          <div class=\"panel-heading\">\r\n            <h4 class=\"panel-title\">\r\n              <a data-toggle=\"collapse\" href=\"#collapseNewPerson\" aria-expanded=\"true\">New Person</a>\r\n            </h4>\r\n          </div>\r\n          <div id=\"collapseNewPerson\" class=\"panel-collapse collapse in\">\r\n            <div class=\"panel-body\">\r\n              <form id=\"person-form\" #newPersonForm=\"ngForm\" (ngSubmit)=\"submitPerson(newPersonForm.value)\">\r\n                <div class=\"col-xs-6\">\r\n                  <p class=\"group-header\">Gender: </p>\r\n                  <div class=\"form-group\">\r\n                    <label class=\"radio-inline\"><input type=\"radio\" name=\"gender\" value=\"male\" [ngModel]>Male</label>\r\n                    <label class=\"radio-inline\"><input type=\"radio\" name=\"gender\" value=\"female\"\r\n                                                       [ngModel]>Female</label>\r\n                    <label class=\"radio-inline\"><input type=\"radio\" name=\"gender\" value=\"random\" [ngModel]=\"'random'\">Hermaphrodite\r\n                      (randomize)</label>\r\n                  </div>\r\n                </div>\r\n                <div class=\"col-xs-6\">\r\n                  <p class=\"group-header\">Age: </p>\r\n                  <div class=\"col-xs-6\">\r\n                    <div class=\"form-group\">\r\n                      <label for=\"value\">Value</label>\r\n                      <input type=\"number\" class=\"form-control\" id=\"value\" step=\".1\" min=\"1\" [ngModel]=\"30\"\r\n                             name=\"ageValue\">\r\n                    </div>\r\n                  </div>\r\n                  <div class=\"col-xs-6\">\r\n                    <div class=\"form-group\">\r\n                      <label for=\"ADeviation\">Deviation</label>\r\n                      <input type=\"number\" class=\"form-control\" id=\"ADeviation\" step=\".1\" min=\"0\" [ngModel]=\"10\"\r\n                             name=\"ageDeviation\">\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n                <div class=\"col-xs-6 separator-top\">\r\n                  <p class=\"group-header\">Position</p>\r\n                  <div class=\"col-xs-3\">\r\n                    <label for=\"x\">X</label>\r\n                    <input type=\"number\" class=\"form-control\" id=\"x\" step=\".1\" min=\"0\" [ngModel]=\"0\" name=\"posX\">\r\n                  </div>\r\n                  <div class=\"col-xs-3\">\r\n                    <label for=\"y\">Y</label>\r\n                    <input type=\"number\" class=\"form-control\" id=\"y\" step=\".1\" min=\"0\" [ngModel]=\"0\" name=\"posY\">\r\n                  </div>\r\n                  <div class=\"col-xs-3\">\r\n                    <label for=\"z\">Z</label>\r\n                    <input type=\"number\" class=\"form-control\" id=\"z\" step=\".1\" min=\"0\" [ngModel]=\"0\" name=\"posZ\">\r\n                  </div>\r\n                  <div class=\"col-xs-3\">\r\n                    <div class=\"form-group\">\r\n                      <label for=\"PDeviation\">Deviation</label>\r\n                      <input type=\"number\" class=\"form-control\" id=\"PDeviation\" step=\".01\" min=\"0\" [ngModel]=\"1\"\r\n                             name=\"posDeviation\">\r\n                    </div>\r\n                  </div>\r\n                </div>\r\n                <div class=\"col-xs-6 separator-top\">\r\n                  <p class=\"group-header\">Other Options</p>\r\n                  <label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"lookingAtScreen\" [ngModel]=\"false\">Looking\r\n                    at Screen</label>\r\n                </div>\r\n              </form>\r\n            </div>\r\n            <div class=\"panel-footer\">\r\n              <div class=\"row\">\r\n                <div class=\"col-xs-2 col-xs-offset-8\">\r\n                  <button class=\"btn btn-primary btn-block\" type=\"submit\" form=\"person-form\">\r\n                    <span *ngIf=\"qty === 1\">Launch person</span>\r\n                    <span *ngIf=\"qty > 1\">Launch people</span>\r\n                  </button>\r\n                </div>\r\n                <div class=\"col-xs-2\">\r\n                  <div class=\"input-group\">\r\n                    <span class=\"input-group-addon\">Quantity</span>\r\n                    <input type=\"number\" step=\"1\" class=\"form-control\" min=\"1\" required [(ngModel)]=\"qty\">\r\n                  </div>\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12\">\r\n      <div class=\"panel-group\">\r\n        <div class=\"panel panel-default\">\r\n          <div class=\"panel-heading\">\r\n            <h4 class=\"panel-title\">\r\n              <a data-toggle=\"collapse\" href=\"#collapsePeople\" aria-expanded=\"true\">People List</a>\r\n            </h4>\r\n          </div>\r\n          <div id=\"collapsePeople\" class=\"panel-collapse collapse in\">\r\n            <div class=\"panel-body\">\r\n              <app-people-table [people]=\"people\"></app-people-table>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ 525:
+/***/ 527:
+/***/ (function(module, exports) {
+
+module.exports = "<ul class=\"nav nav-tabs\">\n  <li><a data-toggle=\"tab\" href=\"#visual\">Visual</a></li>\n  <li class=\"active\"><a data-toggle=\"tab\" href=\"#json\">JSON</a></li>\n</ul>\n\n<div class=\"tab-content\">\n  <div id=\"visual\" class=\"tab-pane fade\">\n    <h3>Not Implemented</h3>\n  </div>\n  <div id=\"json\" class=\"tab-pane fade in active\">\n    <pre>\n      <textarea class=\"form-control\" rows=\"50\" [(ngModel)]=\"manifest\"></textarea>\n    </pre>\n    <button class=\"btn btn-primary\" (click)=\"saveManifest()\">Save Manifest</button>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ 528:
 /***/ (function(module, exports) {
 
 module.exports = "<table class=\"table\">\n  <thead>\n  <tr>\n    <th>Actions</th>\n    <th>Id</th>\n    <th>Gender</th>\n    <th>Looking</th>\n    <th>Age</th>\n    <th><span class=\"label label-danger\">x</span></th>\n    <th><span class=\"label label-success\">y</span></th>\n    <th><span class=\"label label-primary\">z</span></th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let person of people\">\n    <td><button class=\"btn btn-danger\" (click)=\"removePerson(person.person_id)\">X</button></td>\n    <td><pre>{{person.person_id}}</pre></td>\n    <td>{{person.rolling_expected_values && person.rolling_expected_values.gender}}</td>\n    <td>{{person.looking_at_screen}}</td>\n    <td>{{person.rolling_expected_values && person.rolling_expected_values.age}}</td>\n    <td><span class=\"label label-danger\">{{person.coordinates.x}}</span></td>\n    <td><span class=\"label label-success\">{{person.coordinates.y}}</span></td>\n    <td><span class=\"label label-primary\">{{person.coordinates.z}}</span></td>\n  </tr>\n  </tbody>\n</table>\n"
 
 /***/ }),
 
-/***/ 526:
+/***/ 529:
 /***/ (function(module, exports) {
 
 module.exports = "<div *ngIf=\"viewer\" class=\"panel panel-default\">\r\n  <div class=\"panel-heading\">\r\n    {{viewer.rolling_expected_values.gender}}, {{viewer.rolling_expected_values.devAge}} years old\r\n  </div>\r\n  <div class=\"panel-body\">\r\n    <p>\r\n      Id: {{viewer.person_id}}\r\n    </p>\r\n    <p>\r\n      Came on: {{getTime(viewer.local_timestamp)}}\r\n    </p>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ 809:
+/***/ 812:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(354);
@@ -563,5 +660,5 @@ module.exports = __webpack_require__(354);
 
 /***/ })
 
-},[809]);
+},[812]);
 //# sourceMappingURL=main.bundle.js.map
