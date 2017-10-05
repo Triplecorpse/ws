@@ -107,22 +107,6 @@
             <div class="panel-body">
               <app-people-table [people]="people"></app-people-table>
             </div>
-            <div class="panel-footer">
-              <div class="row">
-                <div class="col-xs-2 col-xs-offset-8">
-                  <button class="btn btn-primary btn-block" type="submit" form="person-form">
-                    <span *ngIf="qty === 1">Launch person</span>
-                    <span *ngIf="qty > 1">Launch people</span>
-                  </button>
-                </div>
-                <div class="col-xs-2">
-                  <div class="input-group">
-                    <span class="input-group-addon">Quantity</span>
-                    <input type="number" step="1" class="form-control" min="1" required [(ngModel)]="qty">
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
