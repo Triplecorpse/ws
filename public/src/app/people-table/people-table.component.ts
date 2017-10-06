@@ -15,7 +15,6 @@ export class PeopleTableComponent implements OnInit {
   }
 
   removePerson(id: string) {
-    console.log('called re,ove');
     this.dataService.removePerson(id)
       .subscribe();
   }

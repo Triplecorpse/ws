@@ -73,7 +73,6 @@ export class AppComponent implements OnDestroy {
 
       if (!includes) {
         indexesToDelete.push(index);
-        console.log(indexesToDelete);
       }
     });
 
@@ -84,8 +83,19 @@ export class AppComponent implements OnDestroy {
 
   private replacePerson(id, newPerson) {
     const index = _.findIndex(this.people, person => person.person_id === id);
+    const oldPerson = this.people[index];
 
-    this.people[index] = newPerson;
+      // console.log('i run', oldPerson);
+    if (oldPerson && newPerson.rolling_expected_values) {
+      oldPerson.rolling_expected_values = {
+        age: newPerson.rolling_expected_values.age,
+        gender: newPerson.rolling_expected_values.gender
+      };
+
+      oldPerson.coordinates.x = newPerson.coordinates.x;
+      oldPerson.coordinates.y = newPerson.coordinates.y;
+      oldPerson.coordinates.z = newPerson.coordinates.z;
+    }
   }
 
   ngOnDestroy() {

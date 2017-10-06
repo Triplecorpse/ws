@@ -296,7 +296,6 @@ var AppComponent = (function () {
             var includes = __WEBPACK_IMPORTED_MODULE_3_lodash__["includes"](ids, person.person_id);
             if (!includes) {
                 indexesToDelete.push(index);
-                console.log(indexesToDelete);
             }
         });
         __WEBPACK_IMPORTED_MODULE_3_lodash__["forEach"](indexesToDelete, function (index) {
@@ -305,7 +304,17 @@ var AppComponent = (function () {
     };
     AppComponent.prototype.replacePerson = function (id, newPerson) {
         var index = __WEBPACK_IMPORTED_MODULE_3_lodash__["findIndex"](this.people, function (person) { return person.person_id === id; });
-        this.people[index] = newPerson;
+        var oldPerson = this.people[index];
+        // console.log('i run', oldPerson);
+        if (oldPerson && newPerson.rolling_expected_values) {
+            oldPerson.rolling_expected_values = {
+                age: newPerson.rolling_expected_values.age,
+                gender: newPerson.rolling_expected_values.gender
+            };
+            oldPerson.coordinates.x = newPerson.coordinates.x;
+            oldPerson.coordinates.y = newPerson.coordinates.y;
+            oldPerson.coordinates.z = newPerson.coordinates.z;
+        }
     };
     AppComponent.prototype.ngOnDestroy = function () {
         this.viewerDetectionOutput.messages.unsubscribe();
@@ -470,7 +479,6 @@ var PeopleTableComponent = (function () {
         this.dataService = dataService;
     }
     PeopleTableComponent.prototype.removePerson = function (id) {
-        console.log('called re,ove');
         this.dataService.removePerson(id)
             .subscribe();
     };

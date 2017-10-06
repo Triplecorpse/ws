@@ -2,6 +2,7 @@ const ManifestMessage = require('../models/ManifestModel');
 const personAlive = require('../models/PersonAliveModel');
 const people = require('../models/PeopleModel');
 const timers = require('../services/timers');
+const _ = require('lodash');
 
 const manifest = new ManifestMessage();
 
@@ -26,44 +27,48 @@ function startManifestStream(ws) {
     }
 }
 
-function startPersonAliveStream(ws) {
-    return () => {
-        try {
-            personAlive.setActiveIds(people.getPeople().map(x => x.data.person_id));
-            ws.send(JSON.stringify(personAlive));
-        } catch (e) {
-            console.log('Error, Person Alive Stream', e);
-        }
+function sendPeopleAlive(ws) {
+    try {
+        personAlive.setActiveIds(people.getPeople().map(x => x.data.person_id));
+        ws.send(JSON.stringify(personAlive));
+    } catch (e) {
+        console.log('Error in person_alive Stream ::::', e);
     }
 }
 
-function startPersonUpdateStream(ws) {
+function sendPeopleMessage(ws) {
     return () => {
         try {
-            if (people.getPeople().length) {
-                people.getPeople().forEach(person_update => {
-                    let rolling_expected_values = person_update.data.rolling_expected_values;
-                    let deviations = person_update.deviations;
-
-
-                    person_update.renewPutId();
-                    person_update.deviateAge();
-                    person_update.deviatePosition();
-                    person_update.restampTime();
-
-                    if (person_update.data.local_timestamp - person_update.deviations.initTimestamp <= 2000) {
-                        delete person_update.data.rolling_expected_values;
-                    }
-
-                    delete person_update.deviations;
-                    ws.send(JSON.stringify(person_update));
-
-                    person_update.deviations = deviations;
-                    person_update.data.rolling_expected_values = rolling_expected_values;
-                })
+            const choices = people.getPeople();
+            if (choices.indexOf('person_alive') === -1) {
+                choices.push('person_alive');
             }
+            const messagesToSend = _.shuffle(choices);
+            messagesToSend.forEach(message => {
+                if (message === 'person_alive') {
+                    sendPeopleAlive(ws);
+                    return;
+                }
+                let rolling_expected_values = message.data.rolling_expected_values;
+                let deviations = message.deviations;
+
+                message.renewPutId();
+                message.deviateAge();
+                message.deviatePosition();
+                message.restampTime();
+
+                if (message.data.local_timestamp - message.deviations.initTimestamp <= 2000) {
+                    delete message.data.rolling_expected_values;
+                }
+
+                delete message.deviations;
+                ws.send(JSON.stringify(message));
+
+                message.deviations = deviations;
+                message.data.rolling_expected_values = rolling_expected_values;
+            })
         } catch (e) {
-            console.log('Error, Person Update Stream', e);
+            console.log('Error, Person Update Stream ::::', e);
         }
     }
 }
@@ -79,8 +84,7 @@ module.exports = app => {
 
                     timers.addTimer({
                         manifest: startManifestStream(ws),
-                        person_update: startPersonUpdateStream(ws),
-                        persons_alive: startPersonAliveStream(ws)
+                        person: sendPeopleMessage(ws)
                     });
 
                     break;

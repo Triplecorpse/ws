@@ -28,7 +28,8 @@ function clearPeople() {
 }
 
 function getPeople() {
-    return people;
+    // to create deep copy of array and shallow copy of objects
+    return people.map(x => x);
 }
 
 module.exports = {
