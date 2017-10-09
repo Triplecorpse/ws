@@ -40,10 +40,13 @@ function sendPeopleMessage(ws) {
     return () => {
         try {
             const choices = people.getPeople();
+
             if (choices.indexOf('person_alive') === -1) {
                 choices.push('person_alive');
             }
+
             const messagesToSend = _.shuffle(choices);
+
             messagesToSend.forEach(message => {
                 if (message === 'person_alive') {
                     sendPeopleAlive(ws);

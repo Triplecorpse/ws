@@ -2,167 +2,176 @@
   "poi-config": {},
   "contents": [
     {
+      "id": "60",
       "configuration": {
-        "fields": [],
-        "identifier": "video"
-      },
-      "id": "37",
-      "application_ref": "888c4c95-3ac0-4540-8af6-6ed1276dae34",
-      "assets": [
-        {
-          "id": "2117",
-          "preview_uri": "https://adv-ems-integration.s3.amazonaws.com:443/assets/thumbnails/2017/09/18/dea5eae2-0c97-4d4b-9105-33709076c175-thumbnail.jpg?Signature=DLMRs5Ps3dJl7rDCyN9CO2D5kVc%3D&Expires=1507023789&AWSAccessKeyId=AKIAJ27KW46XU6IO6JJQ",
-          "uri": "https://adv-ems-integration.s3.amazonaws.com:443/assets/files/2017/09/18/75ddbce4-fec3-40aa-b689-e2828cb8eda0.mp4?Signature=fG9684D0dOgRVyStIrMHQqa8y3o%3D&Expires=1507023789&AWSAccessKeyId=AKIAJ27KW46XU6IO6JJQ",
-          "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-          "role": "video"
-        }
-      ],
-      "trigger_group": {
-        "operator": "AND",
-        "children": [
-          {
-            "operator": "IS",
-            "type": "GENDER",
-            "value": "MALE"
-          },
-          {
-            "operator": "IS_BETWEEN",
-            "type": "AGE",
-            "value": "18,36"
-          }
-        ]
-      }
-    },
-    {
-      "configuration": {
-        "fields": [],
-        "identifier": "video"
-      },
-      "id": "38",
-      "application_ref": "888c4c95-3ac0-4540-8af6-6ed1276dae34",
-      "assets": [
-        {
-          "id": "2116",
-          "preview_uri": "https://adv-ems-integration.s3.amazonaws.com:443/assets/thumbnails/2017/09/18/bbeef7df-db44-4d14-a464-5c0d29107813-thumbnail.jpg?Signature=78tRjpRdVDTEGJierUDx2h9kH2E%3D&Expires=1507023789&AWSAccessKeyId=AKIAJ27KW46XU6IO6JJQ",
-          "uri": "https://adv-ems-integration.s3.amazonaws.com:443/assets/files/2017/09/18/c4336cf6-b310-4774-8fd7-723f86956bc8.mp4?Signature=f%2FEUtaYrew%2FUVn77l7ncrG%2BUN%2Bg%3D&Expires=1507023789&AWSAccessKeyId=AKIAJ27KW46XU6IO6JJQ",
-          "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-          "role": "video"
-        }
-      ],
-      "trigger_group": {
-        "operator": "AND",
-        "children": [
-          {
-            "operator": "IS",
-            "type": "GENDER",
-            "value": "FEMALE"
-          },
-          {
-            "operator": "IS_BETWEEN",
-            "type": "AGE",
-            "value": "18,36"
-          }
-        ]
-      }
-    },
-    {
-      "configuration": {
+        "identifier": "Christmas_Promotion_GL",
         "fields": [
           {
-            "role": "txt_1_DE",
-            "value": "Header (German)"
+            "value": "Header Michell",
+            "role": "txt_1_DE"
           },
           {
-            "role": "txt_2_DE",
-            "value": "Title (German)"
+            "value": "Title Michelle",
+            "role": "txt_2_DE"
           },
           {
-            "role": "txt_3_DE",
-            "value": "Subtitle (German)"
+            "value": "xxxx",
+            "role": "txt_3_DE"
           },
           {
-            "role": "txt_4_DE",
-            "value": "Title for logo (German)"
+            "value": "lll",
+            "role": "txt_4_DE"
           },
           {
-            "role": "txt_5_DE",
-            "value": "Footer (German)"
+            "value": "dddd",
+            "role": "txt_5_DE"
           },
           {
-            "role": "txt_1_FR",
-            "value": "Header (French)"
+            "value": "H French",
+            "role": "txt_1_FR"
           },
           {
-            "role": "txt_2_FR",
-            "value": "Title (French)"
+            "value": "T French",
+            "role": "txt_2_FR"
           },
           {
-            "role": "txt_3_FR",
-            "value": "Subtitle (French)"
+            "value": "lll French",
+            "role": "txt_3_FR"
           },
           {
-            "role": "txt_4_FR",
-            "value": "Title for logo (French)"
+            "value": "ddd French",
+            "role": "txt_4_FR"
           },
           {
-            "role": "txt_5_FR",
-            "value": "Footer (French)"
+            "value": "dtew French",
+            "role": "txt_5_FR"
           }
-        ],
-        "identifier": "Christmas_Promotion_GL"
+        ]
       },
-      "id": "52",
       "application_ref": "917a7a4f-be84-4c72-812b-3e48c4c9337a",
       "assets": [
         {
           "id": "2115",
-          "preview_uri": "https://adv-ems-integration.s3.amazonaws.com:443/assets/thumbnails/2017/09/18/163f9fce-f299-475a-b559-5ebc4acb3726-thumbnail.jpg?Signature=CDuusey5Oe44zQFsODHVV%2Bn80s8%3D&Expires=1507023789&AWSAccessKeyId=AKIAJ27KW46XU6IO6JJQ",
-          "uri": "https://adv-ems-integration.s3.amazonaws.com:443/assets/files/2017/09/18/faf7991c-3fa5-4577-bab8-9f71b88b4749.JPG",
+          "role": "logo",
+          "uri": "https://scontent-mxp1-1.xx.fbcdn.net/v/t31.0-8/22339690_849476335230114_4340621419121605767_o.jpg?oh=9317aca59bae499c2d6a80a3dab3e1cf&oe=5A71E1C9",
           "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-          "role": "logo"
+          "preview_uri": "https://adv-ems-integration.s3.amazonaws.com:443/assets/thumbnails/2017/09/18/163f9fce-f299-475a-b559-5ebc4acb3726-thumbnail.jpg?Signature=ICezDTUvxn%2BsrsAxWP90m4ePqLo%3D&Expires=1507564244&AWSAccessKeyId=AKIAJ27KW46XU6IO6JJQ"
+        }
+      ],
+      "trigger_group": {
+        "operator": "AND",
+        "children": [
+          {
+            "operator": "IS",
+            "value": "FEMALE",
+            "type": "GENDER"
+          },
+          {
+            "operator": "IS_BETWEEN",
+            "value": "18,36",
+            "type": "AGE"
+          }
+        ]
+      }
+    },
+    {
+      "id": "52",
+      "configuration": {
+        "identifier": "Christmas_Promotion_GL",
+        "fields": [
+          {
+            "value": "dflkjnv",
+            "role": "txt_1_DE"
+          },
+          {
+            "value": "lkjvn",
+            "role": "txt_2_DE"
+          },
+          {
+            "value": "dflkjnv",
+            "role": "txt_3_DE"
+          },
+          {
+            "value": "lkfdjsv",
+            "role": "txt_4_DE"
+          },
+          {
+            "value": "lkjnsdv",
+            "role": "txt_5_DE"
+          },
+          {
+            "value": "lkjnfds",
+            "role": "txt_1_FR"
+          },
+          {
+            "value": "lkjnsvlkj",
+            "role": "txt_2_FR"
+          },
+          {
+            "value": "nvlkjsdfn",
+            "role": "txt_3_FR"
+          },
+          {
+            "value": "kljdsnv",
+            "role": "txt_4_FR"
+          },
+          {
+            "value": "jklsndv",
+            "role": "txt_5_FR"
+          }
+        ]
+      },
+      "application_ref": "917a7a4f-be84-4c72-812b-3e48c4c9337a",
+      "assets": [
+        {
+          "id": "2115",
+          "role": "logo",
+          "uri": "https://scontent-mxp1-1.xx.fbcdn.net/v/t31.0-8/22339690_849476335230114_4340621419121605767_o.jpg?oh=9317aca59bae499c2d6a80a3dab3e1cf&oe=5A71E1C9",
+          "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "preview_uri": "https://adv-ems-integration.s3.amazonaws.com:443/assets/thumbnails/2017/09/18/163f9fce-f299-475a-b559-5ebc4acb3726-thumbnail.jpg?Signature=ICezDTUvxn%2BsrsAxWP90m4ePqLo%3D&Expires=1507564244&AWSAccessKeyId=AKIAJ27KW46XU6IO6JJQ"
         }
       ],
       "trigger_group": {}
     },
     {
+      "id": "61",
       "configuration": {
+        "identifier": "Kidsday_GL",
         "fields": [
           {
-            "role": "txt_1_DE",
-            "value": "Manifest1"
+            "value": "male t germ",
+            "role": "txt_1_DE"
           },
           {
-            "role": "txt_2_DE",
-            "value": "Header (German)"
+            "value": "he male t germ",
+            "role": "txt_2_DE"
           },
           {
-            "role": "txt_3_DE",
-            "value": "Paragraph (German)"
+            "value": "",
+            "role": "txt_3_DE"
           },
           {
-            "role": "txt_4_DE",
-            "value": "Footer (German)"
+            "value": "",
+            "role": "txt_4_DE"
           },
           {
-            "role": "txt_1_FR",
-            "value": "Title FR"
+            "value": "t male french",
+            "role": "txt_1_FR"
           },
           {
-            "role": "txt_2_FR",
-            "value": "Header (French)"
+            "value": "ddd",
+            "role": "txt_2_FR"
           },
           {
-            "role": "txt_3_FR",
-            "value": "Paragraph (French)"
+            "value": "asdfas male",
+            "role": "txt_3_FR"
           },
           {
-            "role": "txt_4_FR",
-            "value": "Footer (French)"
+            "value": "ddd male",
+            "role": "txt_4_FR"
           }
-        ],
-        "identifier": "Kidsday_GL"
+        ]
       },
-      "id": "53",
       "application_ref": "917a7a4f-be84-4c72-812b-3e48c4c9337a",
       "assets": [],
       "trigger_group": {
@@ -170,72 +179,31 @@
         "children": [
           {
             "operator": "IS",
-            "type": "GENDER",
-            "value": "MALE"
+            "value": "MALE",
+            "type": "GENDER"
           },
           {
             "operator": "IS_BETWEEN",
-            "type": "AGE",
-            "value": "18,36"
+            "value": "18,36",
+            "type": "AGE"
           }
         ]
       }
     },
     {
+      "id": "37",
       "configuration": {
-        "fields": [
-          {
-            "role": "txt_1_DE",
-            "value": "Header (German) for women"
-          },
-          {
-            "role": "txt_2_DE",
-            "value": "Title (German) "
-          },
-          {
-            "role": "txt_3_DE",
-            "value": "Subtitle (German)"
-          },
-          {
-            "role": "txt_4_DE",
-            "value": "Title for logo (German)"
-          },
-          {
-            "role": "txt_5_DE",
-            "value": "Footer (German)"
-          },
-          {
-            "role": "txt_1_FR",
-            "value": "Header (French) for women"
-          },
-          {
-            "role": "txt_2_FR",
-            "value": "Title (French)"
-          },
-          {
-            "role": "txt_3_FR",
-            "value": "Subtitle (French)"
-          },
-          {
-            "role": "txt_4_FR",
-            "value": "Title for logo (French)"
-          },
-          {
-            "role": "txt_5_FR",
-            "value": "Footer (French)"
-          }
-        ],
-        "identifier": "Christmas_Promotion_GL"
+        "identifier": "video",
+        "fields": []
       },
-      "id": "54",
-      "application_ref": "917a7a4f-be84-4c72-812b-3e48c4c9337a",
+      "application_ref": "888c4c95-3ac0-4540-8af6-6ed1276dae34",
       "assets": [
         {
-          "id": "2114",
-          "preview_uri": "https://adv-ems-integration.s3.amazonaws.com:443/assets/thumbnails/2017/09/18/c59e98d8-dcae-446b-bb9a-bbf1eebc1d32-thumbnail.jpg?Signature=uWR2zYTAzj9KLpjmxA5wvVE%2Bat8%3D&Expires=1507023790&AWSAccessKeyId=AKIAJ27KW46XU6IO6JJQ",
-          "uri": "https://adv-ems-integration.s3.amazonaws.com:443/assets/files/2017/09/18/32713773-52fa-45c4-8c22-c93c31fbf452.jpg",
+          "id": "2117",
+          "role": "video",
+          "uri": "http://localhost:3333/content/75ddbce4-fec3-40aa-b689-e2828cb8eda0.mp4",
           "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-          "role": "logo"
+          "preview_uri": "https://adv-ems-integration.s3.amazonaws.com:443/assets/thumbnails/2017/09/18/dea5eae2-0c97-4d4b-9105-33709076c175-thumbnail.jpg?Signature=92qcS7wrnSn6HlwG%2FJgcpUuYYiQ%3D&Expires=1507564244&AWSAccessKeyId=AKIAJ27KW46XU6IO6JJQ"
         }
       ],
       "trigger_group": {
@@ -243,13 +211,13 @@
         "children": [
           {
             "operator": "IS",
-            "type": "GENDER",
-            "value": "FEMALE"
+            "value": "MALE",
+            "type": "GENDER"
           },
           {
             "operator": "IS_BETWEEN",
-            "type": "AGE",
-            "value": "18,36"
+            "value": "50,60",
+            "type": "AGE"
           }
         ]
       }
@@ -257,16 +225,16 @@
   ],
   "applications": [
     {
-      "name": "Dynamic Content App",
-      "uri": "https://adv-ems-integration.s3.amazonaws.com:443/applications/files/2017/10/03/dcbd25be-1d1f-4bdd-9805-80171a72c24f.zip?Signature=l4bks9Szve0beHdiCz2WgWfj%2F%2B4%3D&Expires=1507023790&AWSAccessKeyId=AKIAJ27KW46XU6IO6JJQ",
+      "checksum": "2862c1523e02d787b65ef537199a7b9375e2840c6be0a2290111335b8cf2282d",
       "application_id": "917a7a4f-be84-4c72-812b-3e48c4c9337a",
-      "checksum": "f5dc2d869d093b7c1d043557eb72cac1248b122412a91a5ff15bf013844747d3"
+      "uri": "http://localhost:3333/dca",
+      "name": "Dynamic Content App"
     },
     {
-      "name": "HTML5 Video App",
-      "uri": "https://adv-ems-integration.s3.amazonaws.com:443/applications/files/2017/09/29/f6d6f23d-29ff-4a0b-9782-22b36f15a108.zip?Signature=Ka9nQ1SrVpMZfzegEn6Usb0TN8g%3D&Expires=1507023790&AWSAccessKeyId=AKIAJ27KW46XU6IO6JJQ",
+      "checksum": "bf0c7fd3564034ae3305618bd8c718c877226a44b8f6bfc1c1f1879fcfff9c10",
       "application_id": "888c4c95-3ac0-4540-8af6-6ed1276dae34",
-      "checksum": "c885c0be1bef3d4ef2ea89007a1ca6f66bdee56c1cc3e6de898e17918dbc5932"
+      "uri": "http://localhost:3333/video",
+      "name": "HTML5 Video App"
     }
   ]
 }

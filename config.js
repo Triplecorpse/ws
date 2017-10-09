@@ -1,3 +1,4 @@
 module.exports = {
-    poiToken: 'c317dae3-331b-47b8-b8b5-3a618d011ac6'
+    poiToken: '55b66f05-e31f-4746-befb-47be734013be',
+    endpoint: 'https://integration.api.manager.advertima.com/manifest/json/'
 };
